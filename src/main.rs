@@ -46,7 +46,7 @@ fn main(){
         ]
     ];
 
-    
+    generate_legal_moves_pawn(&board, 4,7);
 }
 
 
@@ -68,4 +68,67 @@ enum PieceType{
 
 fn p (kind : PieceType, is_white : bool) -> Option<Piece> {
     Some(Piece{kind, is_white})
+}
+
+fn generate_legal_moves_pawn(board : &[[Option<Piece>; 8]; 8] , col : usize, row : usize) ->Vec<(usize, usize)>{
+    let piece = board[row][col];
+    let mut legal_moves: Vec<(usize, usize)> = Vec::new();
+    
+    
+    if let Some(piece) = board[row][col] {
+       
+        let direction = if piece.is_white {-1} else {1}; 
+
+        if piece.is_white{
+            let capture_left = (row + 1, col-1);
+            let capture_right = (row + 1, col+1);
+            let move_1sqr_forward = (row+1, col);
+            let move_2sqrs_forward = (row+2, col);
+
+            if !check_if_square_is_occupied(board, move_1sqr_forward){
+                legal_moves.push(move_1sqr_forward);
+            }
+
+            if !check_if_square_is_occupied(board, move_1sqr_forward) &&
+               !check_if_square_is_occupied(board, move_2sqrs_forward){
+                legal_moves.push(move_2sqrs_forward);
+            }
+
+
+        } else{
+            let capture_left = (row-1, col-1);
+            let capture_right = (row-1, col+1);
+            let move_1sqr_forward = (row-1, col);
+            let move_2sqrs_forward = (row-2, col);
+
+            if !check_if_square_is_occupied(board, move_1sqr_forward){
+                legal_moves.push(move_1sqr_forward);
+            }
+
+            if !check_if_square_is_occupied(board, move_1sqr_forward){
+                legal_moves.push(move_2sqrs_forward);
+            }
+        }
+    
+
+      
+    } else {
+    
+        
+        
+    
+    }
+
+    legal_moves
+   
+}
+
+fn check_if_square_is_occupied(board : &[[Option<Piece>; 8]; 8] ,square :  (usize, usize)) -> bool{
+    let (row, col) = square;
+
+    if let Some(piece) = board[row][col]{
+        true
+    }else{
+        false
+    }
 }
