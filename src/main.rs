@@ -20,18 +20,16 @@ fn main(){
 
     let mut game = Game{
         board : Game::initialize_board(),
-        white_to_move : false,
+        white_to_move : true,
         en_passant: None    
     };
-
-    
-
-    
 
 
     let stdin = io::stdin();
 
     for line in stdin.lock().lines() {
+
+        log_debug(&format!("RECEIVED: {:#?}", &line));
 
         let input = match line {
 
@@ -65,7 +63,9 @@ fn main(){
 
             // position startpos moves e2e4 e7e5
             
-            Game::apply_position_from_startpos_uci(&mut game, &input);
+
+
+            game.apply_position_from_startpos_uci(&input);
            
 
             
@@ -73,8 +73,10 @@ fn main(){
         } else if input.starts_with("go") {
 
             // GUI fragt: "Mach einen Zug"
+      
 
 
+            log_value("Is white? ", &game.white_to_move);
             let all_legal_moves= game.generate_all_legal_moves();
 
             let mut very_good_moves : Vec<Move> = Vec::new();
@@ -102,13 +104,14 @@ fn main(){
 
             let random_move = match all_legal_moves.choose(&mut rand::rng()) {
                 Some(i) => i,
-                None => panic!("rip")
+                None => panic!("No move avalible")
             };
 
             log_debug("\n Apply Engine Move: ");
             game.apply_move(&random_move);
 
             let string = format!("bestmove {}", random_move.translate_move_to_uci());
+            log_value("UCI MOVE:", &string);
             println!("{}", string);
             io::stdout().flush().unwrap();
 
