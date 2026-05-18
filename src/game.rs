@@ -1,10 +1,18 @@
 use crate::piece::{Piece, PieceType};
 use crate::chess_move::{Move};
 use crate::move_gen::pawn::generate_pawn_moves;
+use crate::chess_square::Square;
+use crate::debug::{log_debug, log_value};
+
+
+use std::io::{self, BufRead, Write};
+use rand::seq::IndexedRandom;
+use std::fs::OpenOptions;
 
 pub struct Game{
     pub board : [[Option<Piece>; 8]; 8],
-    pub is_white : bool
+    pub en_passant : Option<Square>,
+    pub white_to_move : bool
 }
 
 
@@ -82,19 +90,58 @@ impl Game{
 
         let startpos_uci = startpos_uci.replace("position startpos moves ", "");
 
-        for move_uci in startpos_uci.split_whitespace() {
+        log_debug(&startpos_uci);
 
+        
+        self.white_to_move = true; //Correct init needed, maybe?
+
+        let mut move_counter = 0;
+        for move_uci in startpos_uci.split_whitespace() {    
             let chess_move = Move::tranlate_uci_to_move(move_uci);
+
             self.apply_move(&chess_move);
         }
-        //;
+
+
+        
+
     }
 
     pub fn apply_move(&mut self, chess_move : &Move){
         self.board[chess_move.to_square.row][chess_move.to_square.col] = self.board[chess_move.from_square.row][chess_move.from_square.col];
         self.board[chess_move.from_square.row][chess_move.from_square.col] = None;
-        
+
+       
+
+       
+        self.check_for_en_pasant(chess_move);
+ 
+
+        self.white_to_move = !self.white_to_move; 
     }
+
+    pub fn check_for_en_pasant(&mut self, last_move : &Move){
+        let en_passant_from_row = if self.white_to_move {6} else {1};
+        let en_passant_to_row = if self.white_to_move {4} else {3};
+
+        if  last_move.from_square.row == en_passant_from_row
+            && last_move.to_square.row == en_passant_to_row{
+            let moved_piece = self.board[last_move.to_square.row][last_move.to_square.col];
+
+            
+
+            if let Some(moved_piece) = moved_piece{
+                if moved_piece.kind == PieceType::Pawn{
+                    
+                    self.en_passant = Some(last_move.to_square);
+
+                    return;
+                }
+            }
+        }
+        self.en_passant = None;
+    }
+
 }
 
 fn p (kind : PieceType, is_white : bool) -> Option<Piece> {

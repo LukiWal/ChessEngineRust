@@ -2,6 +2,7 @@ use crate::piece::{Piece, PieceType};
 use crate::game::Game;
 
 #[derive(Clone, Copy, Debug)]
+#[derive(PartialEq, Eq)]
 pub struct Square{
     pub row : usize,
     pub col : usize
@@ -29,7 +30,7 @@ impl Square{
     }
 
     pub fn check_if_square_is_capturable(&self, game : &Game) -> bool{
-        game.board[self.row][self.col].is_some_and(|piece| piece.is_white != game.is_white)
+        game.board[self.row][self.col].is_some_and(|piece| piece.is_white != game.white_to_move)
     }
     
 }

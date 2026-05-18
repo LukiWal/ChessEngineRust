@@ -5,6 +5,7 @@ pub struct Piece{
 }
 
 #[derive(Clone, Copy, Debug)]
+#[derive(PartialEq, Eq)]
 pub enum PieceType{
     King,
     Queen,

@@ -9,21 +9,13 @@ pub struct Move{
     pub from_square : Square,
     pub to_square : Square,
     pub is_capture : bool,
-    pub promotion : Option<PieceType>
+    pub promotion : Option<PieceType>,
+    pub is_en_passant : bool,
 }
 
 impl Move{
     pub fn translate_move_to_uci(&self) -> String{
-        
-
-        let mut file = OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open("./../../uci_debug.log")
-        .unwrap();
-
-        writeln!(file, "{:#?}", self).unwrap();
-        let from_rank = Move::col_to_rank(self.from_square.col);
+        let from_rank: char = Move::col_to_rank(self.from_square.col);
         let from_file = Move::row_to_file(self.from_square.row);
 
         let to_rank = Move::col_to_rank(self.to_square.col);
@@ -55,7 +47,8 @@ impl Move{
             from_square : Square { row: from_row, col: from_col },
             to_square : Square { row: to_row, col: to_col },
             is_capture : false,
-            promotion : None
+            promotion : None,
+            is_en_passant : false, //FIX
         }
     }
 
