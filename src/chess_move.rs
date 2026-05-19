@@ -1,4 +1,4 @@
-use crate::{chess_square::Square, piece::PieceType};
+use crate::{chess_square::Square, debug::log_debug, piece::PieceType};
 
 use std::io::{self, BufRead, Write};
 use rand::seq::IndexedRandom;
@@ -43,11 +43,18 @@ impl Move{
         let to_row =  Move::rank_to_row(to_rank);
         let to_col = Move::file_to_col(to_file); 
 
+        let promotion: Option<PieceType> = if uci.len() > 4{
+            let promotion = uci[4] as char;
+            Some(Move::char_to_promotion(promotion))
+        } else{
+            None
+        };
+
         Self{
             from_square : Square { row: from_row, col: from_col },
             to_square : Square { row: to_row, col: to_col },
             is_capture : false,
-            promotion : None,
+            promotion : promotion,
             is_en_passant : false, //FIX
         }
     }
@@ -114,7 +121,17 @@ impl Move{
             PieceType::Rook => 'r',
             PieceType::Knight => 'n',
             PieceType::Bishop => 'b',
-            _ => panic!("Invalid rank"),
+            _ => panic!("Invalid promotion_to_char translation"),
+        }
+    }
+
+    fn char_to_promotion(promotion_char : char) -> PieceType {
+        match promotion_char {
+            'q' => PieceType::Queen,
+            'r' => PieceType::Rook,
+            'n' =>PieceType::Knight,
+            'b' => PieceType::Bishop,
+            _ => panic!("Invalid char_to_promotion tranlation"),
         }
     }
 }

@@ -1,16 +1,11 @@
-mod piece;
-mod move_gen;
-mod chess_move;
-mod game;
-mod chess_square;
-mod debug;
+
 
 
 use std::io::{self, BufRead, Write};
 use rand::seq::IndexedRandom;
-use crate::chess_move::Move;
-use crate::debug::{log_debug, log_value};
-use crate::game::Game;
+use rust_chess_engine::chess_move::Move;
+use rust_chess_engine::debug::{log_debug, log_value};
+use rust_chess_engine::game::Game;
 
 
 

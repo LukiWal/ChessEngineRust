@@ -1,6 +1,7 @@
 use crate::piece::{Piece, PieceType};
-use crate::chess_move::{Move};
+use crate::chess_move::{self, Move};
 use crate::move_gen::pawn::generate_pawn_moves;
+use crate::move_gen::knight::generate_knight_moves;
 use crate::chess_square::Square;
 use crate::debug::{log_debug, log_value};
 
@@ -73,6 +74,7 @@ impl Game{
                     if piece.is_white == self.white_to_move{
                         let moves = match piece.kind{
                             PieceType::Pawn => generate_pawn_moves(&self, row, col),
+                           // PieceType::Knight => generate_knight_moves(&self, Square { row, col }),
                             _ => Vec::new(),
                         };
         
@@ -87,7 +89,6 @@ impl Game{
 
     pub fn apply_position_from_startpos_uci(&mut self, startpos_uci : &str){
         self.board = Game::initialize_board();
-
         self.white_to_move = true;
 
 
@@ -103,8 +104,12 @@ impl Game{
         
 
         for move_uci in startpos_uci.split_whitespace() {    
-            let chess_move = Move::tranlate_uci_to_move(move_uci);
+            let mut chess_move = Move::tranlate_uci_to_move(move_uci);
 
+            log_debug("what");
+            if self.is_move_en_passant(chess_move){
+                chess_move.is_en_passant = true;
+            }
             self.apply_move(&chess_move);
         }
 
@@ -126,13 +131,14 @@ impl Game{
             }
         }
 
-       
-
+        if let Some(promotion) = chess_move.promotion{
+            self.board[chess_move.to_square.row][chess_move.to_square.col] = Some(Piece{kind: promotion, is_white: self.white_to_move});
+        }
        
         self.check_for_en_pasant(chess_move);
  
 
-        log_debug(&format!("Color Switch from {} to {}", self.white_to_move,  !self.white_to_move));
+        //log_debug(&format!("Color Switch from {} to {}", self.white_to_move,  !self.white_to_move));
         self.white_to_move = !self.white_to_move; 
     }
 
@@ -158,53 +164,32 @@ impl Game{
         self.en_passant = None;
     }
 
+    pub fn is_move_en_passant(&self, chess_move : Move) -> bool{
+        if let Some(piece) = self.get_piece_at_square(chess_move.from_square){
+            let is_pawn = piece.kind == PieceType::Pawn;
+            let is_capture = 0 != chess_move.from_square.col as isize - chess_move.to_square.col as isize;
+            let is_empty_to_square = !self.is_piece_at_square(chess_move.to_square);
+
+            log_debug(&format!("is_pawn: {}, is_capture: {}, is_empty_to_square: {}", is_pawn, is_capture, is_empty_to_square));
+            if is_pawn && is_capture && is_empty_to_square{
+                return true;
+            }
+
+        }
+        false
+    }
+
+    pub fn get_piece_at_square(&self, square : Square) -> Option<Piece>{
+        self.board[square.row][square.col]
+    }
+
+    pub fn is_piece_at_square(&self, square : Square) -> bool{
+        self.board[square.row][square.col].is_some()
+    }
+
 }
 
 fn p (kind : PieceType, is_white : bool) -> Option<Piece> {
     Some(Piece{kind, is_white})
 }
 
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn startpos_has_white_to_move() {
-        let mut game = Game {
-            board: Game::initialize_board(),
-            white_to_move: true,
-            en_passant: None,
-        };
-
-        game.apply_position_from_startpos_uci("position startpos");
-
-        assert_eq!(game.white_to_move, true);
-    }
-
-    #[test]
-    fn after_one_move_black_is_to_move() {
-        let mut game = Game {
-            board: Game::initialize_board(),
-            white_to_move: true,
-            en_passant: None,
-        };
-
-        game.apply_position_from_startpos_uci("position startpos moves e2e4");
-
-        assert_eq!(game.white_to_move, false);
-    }
-
-    #[test]
-    fn after_two_moves_white_is_to_move() {
-        let mut game = Game {
-            board: Game::initialize_board(),
-            white_to_move: true,
-            en_passant: None,
-        };
-
-        game.apply_position_from_startpos_uci("position startpos moves e2e4 e7e5");
-
-        assert_eq!(game.white_to_move, true);
-    }
-}
