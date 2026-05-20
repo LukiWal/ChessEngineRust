@@ -1,14 +1,9 @@
 use crate::piece::{Piece, PieceType};
-use crate::chess_move::{self, Move};
+use crate::chess_move::{Move};
 use crate::move_gen::pawn::generate_pawn_moves;
-use crate::move_gen::knight::generate_knight_moves;
 use crate::chess_square::Square;
-use crate::debug::{log_debug, log_value};
+use crate::debug::{log_debug};
 
-
-use std::io::{self, BufRead, Write};
-use rand::seq::IndexedRandom;
-use std::fs::OpenOptions;
 
 pub struct Game{
     pub board : [[Option<Piece>; 8]; 8],
@@ -97,7 +92,7 @@ impl Game{
         self.white_to_move = true;
 
 
-        let Some(moves_part) = startpos_uci.split(" moves ").nth(1) else {
+        let Some(_) = startpos_uci.split(" moves ").nth(1) else {
             return;
     
         };

@@ -1,4 +1,4 @@
-use crate::piece::{Piece, PieceType};
+use crate::piece::{Piece};
 use crate::game::Game;
 
 #[derive(Clone, Copy, Debug)]

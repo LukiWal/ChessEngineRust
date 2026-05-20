@@ -1,4 +1,4 @@
-use rust_chess_engine::{chess_move::Move, game::Game, chess_square::Square, piece::Piece, piece::PieceType};
+use rust_chess_engine::{chess_move::Move, chess_square::Square, piece::Piece, piece::PieceType};
 
 pub const UCI_MOVES : &[&str] = &[
     // pawns

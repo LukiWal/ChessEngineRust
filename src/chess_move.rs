@@ -1,8 +1,4 @@
-use crate::{chess_square::Square, debug::log_debug, piece::PieceType};
-
-use std::io::{self, BufRead, Write};
-use rand::seq::IndexedRandom;
-use std::fs::OpenOptions;
+use crate::{chess_square::Square, piece::PieceType};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Move{

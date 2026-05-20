@@ -11,7 +11,6 @@ use test_data::{
     EN_PASSANT_APPLY_TEST_CASES
 }; 
 
-use rust_chess_engine::chess_square::Square;
 
 
 #[test]

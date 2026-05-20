@@ -1,12 +1,7 @@
-use crate::piece::{Piece, PieceType};
+use crate::piece::{PieceType};
 use crate::chess_move::{Move};
 use crate::chess_square::Square;
 use crate::game::Game;
-use crate::debug::{log_debug, log_value};
-
-use std::io::{self, BufRead, Write};
-use rand::seq::IndexedRandom;
-use std::fs::OpenOptions;
 
 pub fn generate_pawn_moves(game : &Game , row : usize, col : usize) -> Vec<Move>{
     let mut legal_moves: Vec<Move> = Vec::new();
