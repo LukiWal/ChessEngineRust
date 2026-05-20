@@ -1,4 +1,4 @@
-use rust_chess_engine::{chess_move::Move, chess_square::Square, piece::Piece, piece::PieceType};
+use rust_chess_engine::{chess_move::Move, chess_square::Square, piece::Piece, piece::PieceType, piece::Color};
 
 pub const UCI_MOVES : &[&str] = &[
     // pawns
@@ -34,13 +34,13 @@ pub const UCI_MOVES : &[&str] = &[
     "e5d6", "d5e6", "e4d3", "d4e3",
 ];
 
-pub const POSITION_SIDE : &[(&str, bool)] = &[
-    ("position startpos", true),
-    ("position startpos moves e2e4", false),
-    ("position startpos moves e2e4 e7e5", true),
-    ("position startpos moves e2e4 e7e5 g1f3", false),
-    ("position startpos moves h2h3 c7c5 b2b4 c5b4 a2a3 b4a3 g2g3 a3a2 e2e4 a2b1b", true),
-    ("position startpos moves e2e3 a7a5 f2f4 d7d5 h2h4 c7c5 c2c4 d5c4 a2a3 e7e5 f4e5 g7g6 b2b4 c4b3 h4h5 g6h5 e3e4 c5c4 g2g3 b7b5 d2d4 c4d3 a3a4 b5a4 e5e6 f7e6 g3g4 h5g4 e4e5 g4g3", true),
+pub const POSITION_SIDE : &[(&str, Color)] = &[
+    ("position startpos", Color::White),
+    ("position startpos moves e2e4", Color::Black),
+    ("position startpos moves e2e4 e7e5", Color::White),
+    ("position startpos moves e2e4 e7e5 g1f3", Color::Black),
+    ("position startpos moves h2h3 c7c5 b2b4 c5b4 a2a3 b4a3 g2g3 a3a2 e2e4 a2b1b", Color::White),
+    ("position startpos moves e2e3 a7a5 f2f4 d7d5 h2h4 c7c5 c2c4 d5c4 a2a3 e7e5 f4e5 g7g6 b2b4 c4b3 h4h5 g6h5 e3e4 c5c4 g2g3 b7b5 d2d4 c4d3 a3a4 b5a4 e5e6 f7e6 g3g4 h5g4 e4e5 g4g3", Color::White),
 ];
 
 pub struct PromotionTestCase {

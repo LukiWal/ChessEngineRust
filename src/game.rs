@@ -20,49 +20,49 @@ impl Game{
     
     pub fn initialize_board() -> [[Option<Piece>; 8]; 8]{
         [[
-            p(PieceType::Rook, false), 
-            p(PieceType::Knight, false),
-            p(PieceType::Bishop, false),
-            p(PieceType::Queen, false),
-            p(PieceType::King, false),
-            p(PieceType::Bishop, false),
-            p(PieceType::Knight, false),
-            p(PieceType::Rook, false),
-        ],
-        [
-            p(PieceType::Pawn, false), 
-            p(PieceType::Pawn, false),
-            p(PieceType::Pawn, false),
-            p(PieceType::Pawn, false),
-            p(PieceType::Pawn, false),
-            p(PieceType::Pawn, false),
-            p(PieceType::Pawn, false),
-            p(PieceType::Pawn, false),
-        ],
-            [None;8],
-            [None;8],
-            [None;8],
-            [None;8],
-        [
-            p(PieceType::Pawn, true), 
-            p(PieceType::Pawn, true),
-            p(PieceType::Pawn, true),
-            p(PieceType::Pawn, true),
-            p(PieceType::Pawn, true),
-            p(PieceType::Pawn, true),
-            p(PieceType::Pawn, true),
-            p(PieceType::Pawn, true),
-        ],
-        [
-            p(PieceType::Rook, true), 
-            p(PieceType::Knight, true),
-            p(PieceType::Bishop, true),
-            p(PieceType::King, true),
-            p(PieceType::Queen, true),
-            p(PieceType::Bishop, true),
-            p(PieceType::Knight, true),
-            p(PieceType::Rook, true),
-        ]]
+    new_piece(PieceType::Rook,   Color::Black), 
+    new_piece(PieceType::Knight, Color::Black),
+    new_piece(PieceType::Bishop, Color::Black),
+    new_piece(PieceType::Queen,  Color::Black),
+    new_piece(PieceType::King,   Color::Black),
+    new_piece(PieceType::Bishop, Color::Black),
+    new_piece(PieceType::Knight, Color::Black),
+    new_piece(PieceType::Rook,   Color::Black),
+],
+[
+    new_piece(PieceType::Pawn, Color::Black), 
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+],
+    [None;8],
+    [None;8],
+    [None;8],
+    [None;8],
+[
+    new_piece(PieceType::Pawn, Color::White), 
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+],
+[
+    new_piece(PieceType::Rook,   Color::White), 
+    new_piece(PieceType::Knight, Color::White),
+    new_piece(PieceType::Bishop, Color::White),
+    new_piece(PieceType::Queen,  Color::White),
+    new_piece(PieceType::King,   Color::White),
+    new_piece(PieceType::Bishop, Color::White),
+    new_piece(PieceType::Knight, Color::White),
+    new_piece(PieceType::Rook,   Color::White),
+]]
     }
 
     pub fn generate_all_legal_moves(self : &Game) -> Vec<Move>{
@@ -189,7 +189,7 @@ impl Game{
 
 }
 
-fn p (piece_type : PieceType, is_white : bool) -> Option<Piece> {
-    Some(Piece{piece_type, is_white})
+fn new_piece (piece_type : PieceType, color : Color) -> Option<Piece> {
+    Some(Piece{piece_type, color})
 }
 

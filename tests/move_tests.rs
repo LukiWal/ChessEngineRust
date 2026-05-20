@@ -1,6 +1,6 @@
 mod test_data;
 
-use rust_chess_engine::{chess_move::Move, game::Game};
+use rust_chess_engine::{chess_move::Move, game::Game, piece::Color};
 use test_data::{
     UCI_MOVES, 
     POSITION_SIDE,
@@ -31,7 +31,7 @@ fn applying_position_e2e4_updates_board_and_turn(){
 
     assert!(game.board[6][4].is_none());
     assert!(game.board[4][4].is_some());
-    assert_eq!(game.white_to_move, false);
+    assert_eq!(game.color_to_move, Color::Black);
 }
 
 #[test]
@@ -40,7 +40,7 @@ fn position_sets_correct_side_to_move(){
 
     for uci_string in POSITION_SIDE{
         game.apply_position_from_startpos_uci(&uci_string.0);
-        assert_eq!(game.white_to_move, uci_string.1);
+        assert_eq!(game.color_to_move, uci_string.1);
     }
 }
 

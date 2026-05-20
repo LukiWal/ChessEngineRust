@@ -6,6 +6,7 @@ use rand::seq::IndexedRandom;
 use rust_chess_engine::chess_move::Move;
 use rust_chess_engine::debug::{log_debug, log_value};
 use rust_chess_engine::game::Game;
+use rust_chess_engine::piece::{Color};
 
 
 
@@ -13,11 +14,7 @@ fn main(){
     //let mut board: [[Option<Piece>; 8]; 8] = [
        
 
-    let mut game = Game{
-        board : Game::initialize_board(),
-        color_to_move : Color,
-        en_passant: None    
-    };
+    let mut game = Game::new();
 
 
     let stdin = io::stdin();
@@ -70,8 +67,6 @@ fn main(){
             // GUI fragt: "Mach einen Zug"
       
 
-
-            log_value("Is white? ", &game.white_to_move);
             let all_legal_moves= game.generate_all_legal_moves();
 
             let mut very_good_moves : Vec<Move> = Vec::new();
