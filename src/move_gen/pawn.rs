@@ -43,7 +43,7 @@ pub fn generate_pawn_moves(game : &Game , square : Square) -> Vec<Move>{
 
         for square in [capture_left, capture_right]{
             if let Some(square) = square{
-                if game.is_opponent_piece_at(square, piece) {
+                if game.is_occupied_by_opponent_color(square, piece.color) {
                     if square.row != promotion_row{
                         legal_moves.push(Move { from_square: from_square, to_square: square, is_capture: true, promotion: None, is_en_passant: false });
                     } else{

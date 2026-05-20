@@ -15,16 +15,12 @@ impl Board{
         self.get_piece(square).is_some()
     }
 
-    pub fn is_occupied_by_color(&self, square : Square, color : Color) -> bool{
-        self.get_piece(square).is_some_and(|piece| piece.color == color) 
+    pub fn is_occupied_by_color(&self, square : Square, own_color : Color) -> bool{
+        self.get_piece(square).is_some_and(|piece| piece.color == own_color) 
     }
 
-    pub fn is_opponent_piece_at(&self, square : Square, own_piece : Piece) -> bool{
-        if let Some(opponent_piece) = self.get_piece(square){
-            return opponent_piece.color != own_piece.color
-        }
-
-        false
+    pub fn is_occupied_by_opponent_color(&self, square : Square, own_color : Color) -> bool{
+        self.get_piece(square).is_some_and(|piece| piece.color != own_color) 
     }
 
     pub fn get_piece(&self, square : Square) -> Option<Piece>{

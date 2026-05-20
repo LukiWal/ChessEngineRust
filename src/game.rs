@@ -52,10 +52,9 @@ impl Game{
 
         
 
-        for move_uci in startpos_uci.split_whitespace() {    
-            let mut chess_move = Move::tranlate_uci_to_move(move_uci);
+        for uci_move in startpos_uci.split_whitespace() {    
+            let mut chess_move = Move::tranlate_uci_to_move(uci_move);
 
-            log_debug("what");
             if self.is_move_en_passant(chess_move){
                 chess_move.is_en_passant = true;
             }
@@ -86,7 +85,6 @@ impl Game{
         self.check_for_en_pasant(chess_move);
  
 
-        //log_debug(&format!("Color Switch from {} to {}", self.white_to_move,  !self.white_to_move));
         self.color_to_move = self.color_to_move.opposite(); 
     }
 
@@ -116,7 +114,6 @@ impl Game{
             let is_capture = 0 != chess_move.from_square.col as isize - chess_move.to_square.col as isize;
             let is_empty_to_square = !self.is_occupied(chess_move.to_square);
 
-            log_debug(&format!("is_pawn: {}, is_capture: {}, is_empty_to_square: {}", is_pawn, is_capture, is_empty_to_square));
             if is_pawn && is_capture && is_empty_to_square{
                 return true;
             }
@@ -130,8 +127,8 @@ impl Game{
         self.board.is_occupied(square)
     }
 
-    pub fn is_opponent_piece_at(&self, square : Square, own_piece : Piece) -> bool{
-        self.board.is_opponent_piece_at(square, own_piece)
+    pub fn is_occupied_by_opponent_color(&self, square : Square, color : Color) -> bool{
+        self.board.is_occupied_by_opponent_color(square, color)
     }
 
     pub fn get_piece(&self, square : Square) -> Option<Piece>{
@@ -157,7 +154,4 @@ impl Game{
 
 }
 
-fn new_piece (piece_type : PieceType, color : Color) -> Option<Piece> {
-    Some(Piece{piece_type, color})
-}
 

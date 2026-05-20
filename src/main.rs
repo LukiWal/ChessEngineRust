@@ -97,7 +97,6 @@ fn main(){
                 None => panic!("No move avalible")
             };
 
-            log_debug("\n Apply Engine Move: ");
             game.apply_move(&random_move);
 
             let string = format!("bestmove {}", random_move.translate_move_to_uci());
