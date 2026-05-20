@@ -18,21 +18,24 @@ impl Square{
         }
     }
 
+    pub fn all() -> Vec<Square>{
+        let mut all_squares = Vec::new();
+
+        for i in 0..64{
+            let row = i / 8;
+            let col = i % 8;
+            all_squares.push(Square{row : row, col : col});
+        }
+
+        all_squares
+    }
+
     fn check_if_square_is_in_bounds (row : isize, col : isize) -> bool{
         row >= 0 &&
         row < 8 &&
         col >= 0 &&
         col < 8
-    }
-
-    pub fn check_if_square_is_occupied(&self, board : &[[Option<Piece>; 8]; 8]) -> bool{
-        board[self.row][self.col].is_some()
-    }
-
-    pub fn check_if_square_is_capturable(&self, game : &Game) -> bool{
-        game.board[self.row][self.col].is_some_and(|piece| piece.color != game.color_to_move)
-    }
-    
+    }    
 }
 
 

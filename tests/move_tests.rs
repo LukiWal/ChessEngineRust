@@ -1,6 +1,6 @@
 mod test_data;
 
-use rust_chess_engine::{chess_move::Move, game::Game, piece::Color};
+use rust_chess_engine::{chess_move::Move, chess_square::Square, game::Game, piece::Color};
 use test_data::{
     UCI_MOVES, 
     POSITION_SIDE,
@@ -29,8 +29,10 @@ fn applying_position_e2e4_updates_board_and_turn(){
     let mut game = Game::new();
     game.apply_position_from_startpos_uci(test_uci);
 
-    assert!(game.board[6][4].is_none());
-    assert!(game.board[4][4].is_some());
+    let moved_from = Square{row: 6, col: 4};
+    let moved_to = Square{row: 4, col: 4};
+    assert!(!game.is_occupied(moved_from));
+    assert!(game.is_occupied(moved_to));
     assert_eq!(game.color_to_move, Color::Black);
 }
 
@@ -90,7 +92,7 @@ fn applying_promotion(){
 
     for promotion_test_case in PROMOTION_TEST_CASES{
         game.apply_position_from_startpos_uci(promotion_test_case.position);
-        assert_eq!(game.get_piece_at_square(promotion_test_case.target_square), Some(promotion_test_case.expected_piece));
+        assert_eq!(game.get_piece(promotion_test_case.target_square), Some(promotion_test_case.expected_piece));
     }
 } 
 
@@ -123,14 +125,14 @@ fn applying_en_passant_removes_captured_pawn() {
         game.apply_position_from_startpos_uci(case.position);
 
         assert_eq!(
-            game.get_piece_at_square(case.capturing_pawn_square),
+            game.get_piece(case.capturing_pawn_square),
             Some(case.expected_piece),
             "capturing pawn missing/wrong after en passant.\nPosition: {}",
             case.position
         );
 
         assert_eq!(
-            game.get_piece_at_square(case.captured_pawn_square),
+            game.get_piece(case.captured_pawn_square),
             None,
             "captured pawn was not removed after en passant.\nPosition: {}",
             case.position

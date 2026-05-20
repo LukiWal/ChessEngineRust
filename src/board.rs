@@ -2,7 +2,7 @@ use crate::piece::{Piece, PieceType, Color};
 use crate::chess_square::{Square};
 
 
-struct Board{
+pub struct Board{
     squares : [[Option<Piece>;8];8]
 }
 
@@ -11,11 +11,15 @@ impl Board{
         Self{squares : STANDARD_BOARD_SETUP} 
     }
 
-    fn is_occupied(&self, square : Square) -> bool{
+    pub fn is_occupied(&self, square : Square) -> bool{
         self.get_piece(square).is_some()
     }
 
-    fn is_opponent_piece_at(&self, square : Square, own_piece : Piece) -> bool{
+    pub fn is_occupied_by_color(&self, square : Square, color : Color) -> bool{
+        self.get_piece(square).is_some_and(|piece| piece.color == color) 
+    }
+
+    pub fn is_opponent_piece_at(&self, square : Square, own_piece : Piece) -> bool{
         if let Some(opponent_piece) = self.get_piece(square){
             return opponent_piece.color != own_piece.color
         }
@@ -23,25 +27,39 @@ impl Board{
         false
     }
 
-    fn get_piece(&self, square : Square) -> Option<Piece>{
+    pub fn get_piece(&self, square : Square) -> Option<Piece>{
         self.squares[square.row][square.col]
     }
 
-    fn set_piece(&mut self, square : Square, piece : Piece){
+    pub fn set_piece(&mut self, square : Square, piece : Piece){
         self.squares[square.row][square.col] = Some(piece);
     }
 
-    fn remove_piece(&mut self, square : Square){
+    pub fn remove_piece(&mut self, square : Square){
         self.squares[square.row][square.col] = None;
     }
 
-    fn move_piece(&mut self, from_square : Square, to_square : Square){
+    pub fn move_piece(&mut self, from_square : Square, to_square : Square){
         if let Some(piece_to_move) = self.get_piece(from_square){
             self.set_piece(to_square, piece_to_move);
             self.remove_piece(from_square);
         } else{
             panic!("move_piece: No Piece to Move")
         }
+    }
+
+    pub fn occupied_squares_by_color(&self, color : Color) -> Vec<(Square, Piece)>{
+        let mut all_occupied_squares_by_color : Vec<(Square, Piece)> = Vec::new();
+
+        for square in Square::all(){
+            if self.is_occupied_by_color(square, color){
+                if let Some (piece) = self.get_piece(square){
+                    all_occupied_squares_by_color.push((square, piece));
+                }              
+            }
+        }
+
+        all_occupied_squares_by_color
     }
 
 }
