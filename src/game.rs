@@ -2,6 +2,10 @@ use crate::piece::{Piece, PieceType, Color};
 use crate::board::{Board};
 use crate::chess_move::{Move};
 use crate::move_gen::pawn::generate_pawn_moves;
+use crate::move_gen::knight::generate_knight_moves;
+use crate::move_gen::sliding_pieces::generate_rook_moves;
+use crate::move_gen::sliding_pieces::generate_bishop_moves;
+use crate::move_gen::sliding_pieces::generate_queen_moves;
 use crate::chess_square::Square;
 use crate::debug::{log_debug};
 
@@ -27,7 +31,10 @@ impl Game{
 
             let moves = match piece.piece_type{
                 PieceType::Pawn => generate_pawn_moves(&self, square),
-               // PieceType::Knight => generate_knight_moves(&self, Square { row, col }),
+                PieceType::Knight => generate_knight_moves(&self, square),
+                PieceType::Rook => generate_rook_moves(&self, square),
+                PieceType::Bishop => generate_bishop_moves(&self, square),
+                PieceType::Queen => generate_queen_moves(&self, square),
                 _ => Vec::new(),
             };
 
@@ -38,6 +45,7 @@ impl Game{
     }
 
     pub fn apply_position_from_startpos_uci(&mut self, startpos_uci : &str){
+        // Reset Board
         self.board = Board::new();
         self.color_to_move = Color::White;
 
