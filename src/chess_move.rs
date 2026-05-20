@@ -11,32 +11,32 @@ pub struct Move{
 
 impl Move{
     pub const fn new_normal(from_square : Square, to_square : Square) -> Self{
-        Move { from_square, to_square, is_capture: false, is_en_passant: false, promotion: None}
+        Self { from_square, to_square, is_capture: false, is_en_passant: false, promotion: None}
     }
 
     pub const fn new_capture(from_square : Square, to_square : Square) -> Self{
-        Move { from_square, to_square, is_capture: true, is_en_passant: false, promotion: None}
+        Self { from_square, to_square, is_capture: true, is_en_passant: false, promotion: None}
     }
 
     pub const fn new_en_passant(from_square : Square, to_square : Square) -> Self{
-        Move { from_square, to_square, is_capture: true, is_en_passant: true, promotion: None}
+        Self { from_square, to_square, is_capture: true, is_en_passant: true, promotion: None}
     }
 
     pub const fn new_promotion(from_square : Square, to_square : Square, is_capture : bool, promotion : PieceType) -> Self{
-        Move { from_square, to_square, is_capture: is_capture, is_en_passant: false, promotion: Some(promotion)}
+        Self { from_square, to_square, is_capture: is_capture, is_en_passant: false, promotion: Some(promotion)}
     }
 
     pub fn translate_move_to_uci(&self) -> String{
-        let from_rank: char = Move::col_to_rank(self.from_square.col);
-        let from_file = Move::row_to_file(self.from_square.row);
+        let from_rank: char = Self::col_to_rank(self.from_square.col);
+        let from_file = Self::row_to_file(self.from_square.row);
 
-        let to_rank = Move::col_to_rank(self.to_square.col);
-        let to_file = Move::row_to_file(self.to_square.row);
+        let to_rank = Self::col_to_rank(self.to_square.col);
+        let to_file = Self::row_to_file(self.to_square.row);
 
         let mut uci = format!("{}{}{}{}", from_rank, from_file, to_rank, to_file);
        
         if let Some(promotion) = self.promotion{
-            uci.push(Move::promotion_to_char(promotion));
+            uci.push(Self::promotion_to_char(promotion));
         }
 
         uci
@@ -50,14 +50,14 @@ impl Move{
         let to_file = uci[2] as char;  
         let to_rank = uci[3] as char;
 
-        let from_row =  Move::rank_to_row(from_rank);
-        let from_col = Move::file_to_col(from_file);
-        let to_row =  Move::rank_to_row(to_rank);
-        let to_col = Move::file_to_col(to_file); 
+        let from_row =  Self::rank_to_row(from_rank);
+        let from_col = Self::file_to_col(from_file);
+        let to_row =  Self::rank_to_row(to_rank);
+        let to_col = Self::file_to_col(to_file); 
 
         let promotion: Option<PieceType> = if uci.len() > 4{
             let promotion = uci[4] as char;
-            Some(Move::char_to_promotion(promotion))
+            Some(Self::char_to_promotion(promotion))
         } else{
             None
         };
