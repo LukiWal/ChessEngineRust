@@ -12,12 +12,17 @@ use std::fs::OpenOptions;
 
 pub struct Game{
     pub board : [[Option<Piece>; 8]; 8],
-    pub en_passant : Option<Square>,
-    pub white_to_move : bool
+    pub white_to_move : bool,
+    pub en_passant : Option<Square>
 }
 
 
 impl Game{
+
+    pub fn new() -> Self{
+        Self { board: Self::initialize_board(), white_to_move: true, en_passant: None}
+    }
+    
     pub fn initialize_board() -> [[Option<Piece>; 8]; 8]{
         [[
             p(PieceType::Rook, false), 

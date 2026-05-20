@@ -4,16 +4,32 @@ use std::io::{self, BufRead, Write};
 use rand::seq::IndexedRandom;
 use std::fs::OpenOptions;
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Move{
     pub from_square : Square,
     pub to_square : Square,
     pub is_capture : bool,
-    pub promotion : Option<PieceType>,
     pub is_en_passant : bool,
+    pub promotion : Option<PieceType>,
 }
 
 impl Move{
+    pub const fn new_normal(from_square : Square, to_square : Square) -> Self{
+        Move { from_square, to_square, is_capture: false, is_en_passant: false, promotion: None}
+    }
+
+    pub const fn new_capture(from_square : Square, to_square : Square) -> Self{
+        Move { from_square, to_square, is_capture: true, is_en_passant: false, promotion: None}
+    }
+
+    pub const fn new_en_passant(from_square : Square, to_square : Square) -> Self{
+        Move { from_square, to_square, is_capture: true, is_en_passant: true, promotion: None}
+    }
+
+    pub const fn new_promotion(from_square : Square, to_square : Square, is_capture : bool, promotion : PieceType) -> Self{
+        Move { from_square, to_square, is_capture: is_capture, is_en_passant: false, promotion: Some(promotion)}
+    }
+
     pub fn translate_move_to_uci(&self) -> String{
         let from_rank: char = Move::col_to_rank(self.from_square.col);
         let from_file = Move::row_to_file(self.from_square.row);

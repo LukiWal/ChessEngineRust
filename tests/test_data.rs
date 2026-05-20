@@ -95,3 +95,247 @@ pub struct PromotionMoveGenerationTestCase {
     pub position: &'static str,
     pub moves : [Move;4]
 }
+
+pub const PROMOTION_MOVE_GENERATION_TEST_CASES: [PromotionMoveGenerationTestCase; 4] = [
+    // White non-capture promotion: e7 -> e8
+    // e8, d8, f8 wurden vorher "freigeräumt", damit nur e7e8 Promotions entstehen.
+    PromotionMoveGenerationTestCase {
+        position: "position startpos moves e2e4 e8e7 e4e5 d8d7 e5e6 f8f7 e6e7 a7a6",
+        moves: [
+            Move::new_promotion(Square { row: 1, col: 4 }, Square { row: 0, col: 4 }, false, PieceType::Queen),
+            Move::new_promotion(Square { row: 1, col: 4 }, Square { row: 0, col: 4 }, false, PieceType::Rook),
+            Move::new_promotion(Square { row: 1, col: 4 }, Square { row: 0, col: 4 }, false, PieceType::Bishop),
+            Move::new_promotion(Square { row: 1, col: 4 }, Square { row: 0, col: 4 }, false, PieceType::Knight),
+        ],
+    },
+
+    // White non-capture promotion: h7 -> h8
+    // h8 und g8 wurden freigeräumt.
+    PromotionMoveGenerationTestCase {
+        position: "position startpos moves h2h4 h8h7 h4h5 g8g7 h5h6 a7a6 h6h7 b7b6",
+        moves: [
+            Move::new_promotion(Square { row: 1, col: 7 }, Square { row: 0, col: 7 }, false, PieceType::Queen),
+            Move::new_promotion(Square { row: 1, col: 7 }, Square { row: 0, col: 7 }, false, PieceType::Rook),
+            Move::new_promotion(Square { row: 1, col: 7 }, Square { row: 0, col: 7 }, false, PieceType::Bishop),
+            Move::new_promotion(Square { row: 1, col: 7 }, Square { row: 0, col: 7 }, false, PieceType::Knight),
+        ],
+    },
+
+    // Black non-capture promotion: e2 -> e1
+    // e1, d1, f1 wurden freigeräumt. Danach ist Schwarz am Zug.
+    PromotionMoveGenerationTestCase {
+        position: "position startpos moves e2e4 e7e5 e1e2 e5e4 d1d3 e4e3 f1f3 e3e2 a2a3",
+        moves: [
+            Move::new_promotion(Square { row: 6, col: 4 }, Square { row: 7, col: 4 }, false, PieceType::Queen),
+            Move::new_promotion(Square { row: 6, col: 4 }, Square { row: 7, col: 4 }, false, PieceType::Rook),
+            Move::new_promotion(Square { row: 6, col: 4 }, Square { row: 7, col: 4 }, false, PieceType::Bishop),
+            Move::new_promotion(Square { row: 6, col: 4 }, Square { row: 7, col: 4 }, false, PieceType::Knight),
+        ],
+    },
+
+    // Black capture promotion: a2xb1
+    // a1 ist blockiert, b1 ist von weißem Springer besetzt, Schwarz ist am Zug.
+    PromotionMoveGenerationTestCase {
+        position: "position startpos moves h2h3 c7c5 b2b4 c5b4 a2a3 b4a3 g2g3 a3a2 e2e4",
+        moves: [
+            Move::new_promotion(Square { row: 6, col: 0 }, Square { row: 7, col: 1 }, true, PieceType::Queen),
+            Move::new_promotion(Square { row: 6, col: 0 }, Square { row: 7, col: 1 }, true, PieceType::Rook),
+            Move::new_promotion(Square { row: 6, col: 0 }, Square { row: 7, col: 1 }, true, PieceType::Bishop),
+            Move::new_promotion(Square { row: 6, col: 0 }, Square { row: 7, col: 1 }, true, PieceType::Knight),
+        ],
+    },
+];
+
+pub struct PromotionMoveGenerationTestCase12 {
+    pub position: &'static str,
+    pub moves : [Move;12]
+}
+
+pub const MAX_PROMOTION_MOVE_GENERATION_TEST_CASE_12: PromotionMoveGenerationTestCase12 =
+    PromotionMoveGenerationTestCase12 {
+        position: "position startpos moves e2e4 e7e5 e4e5 e8e7 e5e6 a7a6 e6e7 a6a5",
+        moves: [
+            // forward promotion: e7 -> e8
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 4 },
+                false,
+                PieceType::Queen,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 4 },
+                false,
+                PieceType::Rook,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 4 },
+                false,
+                PieceType::Bishop,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 4 },
+                false,
+                PieceType::Knight,
+            ),
+
+            // left capture promotion: e7 -> d8
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 3 },
+                true,
+                PieceType::Queen,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 3 },
+                true,
+                PieceType::Rook,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 3 },
+                true,
+                PieceType::Bishop,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 3 },
+                true,
+                PieceType::Knight,
+            ),
+
+            // right capture promotion: e7 -> f8
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 5 },
+                true,
+                PieceType::Queen,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 5 },
+                true,
+                PieceType::Rook,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 5 },
+                true,
+                PieceType::Bishop,
+            ),
+            Move::new_promotion(
+                Square { row: 1, col: 4 },
+                Square { row: 0, col: 5 },
+                true,
+                PieceType::Knight,
+            ),
+        ],
+    };
+
+    pub struct EnPassantMoveGenerationTestCase {
+        pub position: &'static str,
+        pub moves: [Move; 1],
+    }
+
+    pub const EN_PASSANT_MOVE_GENERATION_TEST_CASES: [EnPassantMoveGenerationTestCase; 4] = [
+    // White: e5xd6 en passant
+    EnPassantMoveGenerationTestCase {
+        position: "position startpos moves e2e4 a7a6 e4e5 d7d5",
+        moves: [
+            Move::new_en_passant(
+                Square { row: 3, col: 4 }, // e5
+                Square { row: 2, col: 3 }, // d6
+            ),
+        ],
+    },
+
+    // White: d5xe6 en passant
+    EnPassantMoveGenerationTestCase {
+        position: "position startpos moves d2d4 a7a6 d4d5 e7e5",
+        moves: [
+            Move::new_en_passant(
+                Square { row: 3, col: 3 }, // d5
+                Square { row: 2, col: 4 }, // e6
+            ),
+        ],
+    },
+
+    // Black: e4xd3 en passant
+    EnPassantMoveGenerationTestCase {
+        position: "position startpos moves a2a3 e7e5 a3a4 e5e4 d2d4",
+        moves: [
+            Move::new_en_passant(
+                Square { row: 4, col: 4 }, // e4
+                Square { row: 5, col: 3 }, // d3
+            ),
+        ],
+    },
+
+    // Black: d4xe3 en passant
+    EnPassantMoveGenerationTestCase {
+        position: "position startpos moves a2a3 d7d5 a3a4 d5d4 e2e4",
+        moves: [
+            Move::new_en_passant(
+                Square { row: 4, col: 3 }, // d4
+                Square { row: 5, col: 4 }, // e3
+            ),
+        ],
+    },
+];
+
+
+pub struct EnPassantApplyTestCase {
+    pub position: &'static str,
+    pub capturing_pawn_square: Square,
+    pub captured_pawn_square: Square,
+    pub expected_piece: Piece,
+}   
+
+pub const EN_PASSANT_APPLY_TEST_CASES: [EnPassantApplyTestCase; 4] = [
+    // White: e5xd6 en passant
+    EnPassantApplyTestCase {
+        position: "position startpos moves e2e4 a7a6 e4e5 d7d5 e5d6",
+        capturing_pawn_square: Square { row: 2, col: 3 }, // d6
+        captured_pawn_square: Square { row: 3, col: 3 },  // d5
+        expected_piece: Piece {
+            kind: PieceType::Pawn,
+            is_white: true,
+        },
+    },
+
+    // White: d5xe6 en passant
+    EnPassantApplyTestCase {
+        position: "position startpos moves d2d4 a7a6 d4d5 e7e5 d5e6",
+        capturing_pawn_square: Square { row: 2, col: 4 }, // e6
+        captured_pawn_square: Square { row: 3, col: 4 },  // e5
+        expected_piece: Piece {
+            kind: PieceType::Pawn,
+            is_white: true,
+        },
+    },
+
+    // Black: e4xd3 en passant
+    EnPassantApplyTestCase {
+        position: "position startpos moves a2a3 e7e5 a3a4 e5e4 d2d4 e4d3",
+        capturing_pawn_square: Square { row: 5, col: 3 }, // d3
+        captured_pawn_square: Square { row: 4, col: 3 },  // d4
+        expected_piece: Piece {
+            kind: PieceType::Pawn,
+            is_white: false,
+        },
+    },
+
+    // Black: d4xe3 en passant
+    EnPassantApplyTestCase {
+        position: "position startpos moves a2a3 d7d5 a3a4 d5d4 e2e4 d4e3",
+        capturing_pawn_square: Square { row: 5, col: 4 }, // e3
+        captured_pawn_square: Square { row: 4, col: 4 },  // e4
+        expected_piece: Piece {
+            kind: PieceType::Pawn,
+            is_white: false,
+        },
+    },
+];
