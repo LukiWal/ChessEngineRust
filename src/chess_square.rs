@@ -30,7 +30,7 @@ impl Square{
     }
 
     pub fn check_if_square_is_capturable(&self, game : &Game) -> bool{
-        game.board[self.row][self.col].is_some_and(|piece| piece.is_white != game.white_to_move)
+        game.board[self.row][self.col].is_some_and(|piece| piece.color != game.color_to_move)
     }
     
 }

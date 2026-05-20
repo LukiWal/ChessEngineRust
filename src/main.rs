@@ -15,7 +15,7 @@ fn main(){
 
     let mut game = Game{
         board : Game::initialize_board(),
-        white_to_move : true,
+        color_to_move : Color,
         en_passant: None    
     };
 

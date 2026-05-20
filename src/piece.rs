@@ -2,15 +2,15 @@
 #[derive(PartialEq, Eq)]
 pub struct Piece{
     pub piece_type : PieceType,
-    pub is_white : bool,
+    pub color : Color,
 }
 
 
 impl Piece{
-    pub fn new(piece_type : PieceType, is_white: bool) -> Self{
+    pub const fn new(piece_type : PieceType, color: Color) -> Self{
         Self{
             piece_type,
-            is_white
+            color
         }
     }
 }
@@ -24,4 +24,21 @@ pub enum PieceType{
     Knight,
     Bishop,
     Pawn
+}
+
+#[derive(Clone, Copy, Debug)]
+#[derive(PartialEq, Eq)]
+pub enum Color{
+    White,
+    Black
+}
+
+impl Color{
+    pub fn opposite(self) -> Self{
+        match self{
+            Color::White => Color::Black,
+            Color::Black => Color::White
+        }
+           
+    }
 }

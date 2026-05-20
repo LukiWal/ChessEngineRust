@@ -1,4 +1,4 @@
-use crate::piece::{PieceType};
+use crate::piece::{PieceType, Color};
 use crate::chess_move::{Move};
 use crate::chess_square::Square;
 use crate::game::Game;
@@ -9,9 +9,9 @@ pub fn generate_pawn_moves(game : &Game , row : usize, col : usize) -> Vec<Move>
     
     if let Some(piece) = game.board[row][col] {
        
-        let direction : isize = if piece.is_white {-1} else {1}; 
-        let start_row = if piece.is_white{6} else{1};
-        let promotion_row = if piece.is_white{0} else {7};
+        let direction : isize = if piece.color == Color::White {-1} else {1}; 
+        let start_row = if piece.color == Color::White{6} else{1};
+        let promotion_row = if piece.color == Color::White{0} else {7};
         let row = row as isize;
         let col = col as isize;
 

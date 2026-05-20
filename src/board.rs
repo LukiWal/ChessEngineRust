@@ -1,4 +1,4 @@
-use crate::piece::{Piece, PieceType};
+use crate::piece::{Piece, PieceType, Color};
 use crate::chess_square::{Square};
 
 
@@ -17,7 +17,7 @@ impl Board{
 
     fn is_opponent_piece_at(&self, square : Square, own_piece : Piece) -> bool{
         if let Some(opponent_piece) = self.get_piece(square){
-            return opponent_piece.is_white != own_piece .is_white
+            return opponent_piece.color != own_piece.color
         }
 
         false
@@ -48,50 +48,50 @@ impl Board{
 
 
 const STANDARD_BOARD_SETUP : [[Option<Piece>; 8]; 8] = [[
-    new_piece(PieceType::Rook, false), 
-    new_piece(PieceType::Knight, false),
-    new_piece(PieceType::Bishop, false),
-    new_piece(PieceType::Queen, false),
-    new_piece(PieceType::King, false),
-    new_piece(PieceType::Bishop, false),
-    new_piece(PieceType::Knight, false),
-    new_piece(PieceType::Rook, false),
+    new_piece(PieceType::Rook,   Color::Black), 
+    new_piece(PieceType::Knight, Color::Black),
+    new_piece(PieceType::Bishop, Color::Black),
+    new_piece(PieceType::Queen,  Color::Black),
+    new_piece(PieceType::King,   Color::Black),
+    new_piece(PieceType::Bishop, Color::Black),
+    new_piece(PieceType::Knight, Color::Black),
+    new_piece(PieceType::Rook,   Color::Black),
 ],
 [
-    new_piece(PieceType::Pawn, false), 
-    new_piece(PieceType::Pawn, false),
-    new_piece(PieceType::Pawn, false),
-    new_piece(PieceType::Pawn, false),
-    new_piece(PieceType::Pawn, false),
-    new_piece(PieceType::Pawn, false),
-    new_piece(PieceType::Pawn, false),
-    new_piece(PieceType::Pawn, false),
+    new_piece(PieceType::Pawn, Color::Black), 
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
 ],
     [None;8],
     [None;8],
     [None;8],
     [None;8],
 [
-    new_piece(PieceType::Pawn, true), 
-    new_piece(PieceType::Pawn, true),
-    new_piece(PieceType::Pawn, true),
-    new_piece(PieceType::Pawn, true),
-    new_piece(PieceType::Pawn, true),
-    new_piece(PieceType::Pawn, true),
-    new_piece(PieceType::Pawn, true),
-    new_piece(PieceType::Pawn, true),
+    new_piece(PieceType::Pawn, Color::White), 
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
 ],
 [
-    new_piece(PieceType::Rook, true), 
-    new_piece(PieceType::Knight, true),
-    new_piece(PieceType::Bishop, true),
-    new_piece(PieceType::King, true),
-    new_piece(PieceType::Queen, true),
-    new_piece(PieceType::Bishop, true),
-    new_piece(PieceType::Knight, true),
-    new_piece(PieceType::Rook, true),
+    new_piece(PieceType::Rook,   Color::White), 
+    new_piece(PieceType::Knight, Color::White),
+    new_piece(PieceType::Bishop, Color::White),
+    new_piece(PieceType::Queen,  Color::White),
+    new_piece(PieceType::King,   Color::White),
+    new_piece(PieceType::Bishop, Color::White),
+    new_piece(PieceType::Knight, Color::White),
+    new_piece(PieceType::Rook,   Color::White),
 ]];
 
-const fn new_piece(piece_type : PieceType, is_white : bool) -> Option<Piece> {
-    Some(Piece::new(piece_type, is_white))
+const fn new_piece(piece_type : PieceType, color : Color) -> Option<Piece> {
+    Some(Piece::new(piece_type, color))
 }

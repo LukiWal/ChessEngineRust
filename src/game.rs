@@ -1,4 +1,4 @@
-use crate::piece::{Piece, PieceType};
+use crate::piece::{Piece, PieceType, Color};
 use crate::chess_move::{Move};
 use crate::move_gen::pawn::generate_pawn_moves;
 use crate::chess_square::Square;
@@ -7,7 +7,7 @@ use crate::debug::{log_debug};
 
 pub struct Game{
     pub board : [[Option<Piece>; 8]; 8],
-    pub white_to_move : bool,
+    pub color_to_move : Color,
     pub en_passant : Option<Square>
 }
 
@@ -15,7 +15,7 @@ pub struct Game{
 impl Game{
 
     pub fn new() -> Self{
-        Self { board: Self::initialize_board(), white_to_move: true, en_passant: None}
+        Self { board: Self::initialize_board(), color_to_move: Color::White, en_passant: None}
     }
     
     pub fn initialize_board() -> [[Option<Piece>; 8]; 8]{
@@ -71,7 +71,7 @@ impl Game{
             for col in 0..8{
                 if let Some(piece) = &self.board[row][col]{
 
-                    if piece.is_white == self.white_to_move{
+                    if piece.color == self.color_to_move{
                         let moves = match piece.piece_type{
                             PieceType::Pawn => generate_pawn_moves(&self, row, col),
                            // PieceType::Knight => generate_knight_moves(&self, Square { row, col }),
@@ -89,7 +89,7 @@ impl Game{
 
     pub fn apply_position_from_startpos_uci(&mut self, startpos_uci : &str){
         self.board = Game::initialize_board();
-        self.white_to_move = true;
+        self.color_to_move = Color::White;
 
 
         let Some(_) = startpos_uci.split(" moves ").nth(1) else {
@@ -132,19 +132,19 @@ impl Game{
         }
 
         if let Some(promotion) = chess_move.promotion{
-            self.board[chess_move.to_square.row][chess_move.to_square.col] = Some(Piece{piece_type: promotion, is_white: self.white_to_move});
+            self.board[chess_move.to_square.row][chess_move.to_square.col] = Some(Piece{piece_type: promotion, color: self.color_to_move});
         }
        
         self.check_for_en_pasant(chess_move);
  
 
         //log_debug(&format!("Color Switch from {} to {}", self.white_to_move,  !self.white_to_move));
-        self.white_to_move = !self.white_to_move; 
+        self.color_to_move = self.color_to_move.opposite(); 
     }
 
     pub fn check_for_en_pasant(&mut self, last_move : &Move){
-        let en_passant_from_row = if self.white_to_move {6} else {1};
-        let en_passant_to_row = if self.white_to_move {4} else {3};
+        let en_passant_from_row = if self.color_to_move == Color::White {6} else {1};
+        let en_passant_to_row = if self.color_to_move == Color::White {4} else {3};
 
         if  last_move.from_square.row == en_passant_from_row
             && last_move.to_square.row == en_passant_to_row{
