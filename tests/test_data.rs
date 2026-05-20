@@ -55,7 +55,7 @@ pub const PROMOTION_TEST_CASES : [PromotionTestCase;4] = [
         position: "position startpos moves a2a4 h7h6 a4a5 h6h5 a5a6 h5h4 a6a7 a8b8 a7a8q",
         target_square: Square { row: 0, col: 0 }, // a8
         expected_piece: Piece {
-            kind: PieceType::Queen,
+            piece_type: PieceType::Queen,
             is_white: true,
         },
     },
@@ -65,7 +65,7 @@ pub const PROMOTION_TEST_CASES : [PromotionTestCase;4] = [
         position: "position startpos moves g2g4 a7a6 g4g5 a6a5 g5g6 a5a4 g6g7 b7b6 g7h8n",
         target_square: Square { row: 0, col: 7 }, // h8
         expected_piece: Piece {
-            kind: PieceType::Knight,
+            piece_type: PieceType::Knight,
             is_white: true,
         },
     },
@@ -75,7 +75,7 @@ pub const PROMOTION_TEST_CASES : [PromotionTestCase;4] = [
         position: "position startpos moves g1f3 h7h5 a2a3 h5h4 a3a4 h4h3 a4a5 h3h2 h1g1 h2h1r",
         target_square: Square { row: 7, col: 7 }, // h1
         expected_piece: Piece {
-            kind: PieceType::Rook,
+            piece_type: PieceType::Rook,
             is_white: false,
         },
     },
@@ -85,7 +85,7 @@ pub const PROMOTION_TEST_CASES : [PromotionTestCase;4] = [
         position: "position startpos moves h2h3 c7c5 b2b4 c5b4 a2a3 b4a3 g2g3 a3a2 e2e4 a2b1b",
         target_square: Square { row: 7, col: 1 }, // b1
         expected_piece: Piece {
-            kind: PieceType::Bishop,
+            piece_type: PieceType::Bishop,
             is_white: false,
         },
     },
@@ -301,7 +301,7 @@ pub const EN_PASSANT_APPLY_TEST_CASES: [EnPassantApplyTestCase; 4] = [
         capturing_pawn_square: Square { row: 2, col: 3 }, // d6
         captured_pawn_square: Square { row: 3, col: 3 },  // d5
         expected_piece: Piece {
-            kind: PieceType::Pawn,
+            piece_type: PieceType::Pawn,
             is_white: true,
         },
     },
@@ -312,7 +312,7 @@ pub const EN_PASSANT_APPLY_TEST_CASES: [EnPassantApplyTestCase; 4] = [
         capturing_pawn_square: Square { row: 2, col: 4 }, // e6
         captured_pawn_square: Square { row: 3, col: 4 },  // e5
         expected_piece: Piece {
-            kind: PieceType::Pawn,
+            piece_type: PieceType::Pawn,
             is_white: true,
         },
     },
@@ -323,7 +323,7 @@ pub const EN_PASSANT_APPLY_TEST_CASES: [EnPassantApplyTestCase; 4] = [
         capturing_pawn_square: Square { row: 5, col: 3 }, // d3
         captured_pawn_square: Square { row: 4, col: 3 },  // d4
         expected_piece: Piece {
-            kind: PieceType::Pawn,
+            piece_type: PieceType::Pawn,
             is_white: false,
         },
     },
@@ -334,7 +334,7 @@ pub const EN_PASSANT_APPLY_TEST_CASES: [EnPassantApplyTestCase; 4] = [
         capturing_pawn_square: Square { row: 5, col: 4 }, // e3
         captured_pawn_square: Square { row: 4, col: 4 },  // e4
         expected_piece: Piece {
-            kind: PieceType::Pawn,
+            piece_type: PieceType::Pawn,
             is_white: false,
         },
     },

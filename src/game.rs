@@ -72,7 +72,7 @@ impl Game{
                 if let Some(piece) = &self.board[row][col]{
 
                     if piece.is_white == self.white_to_move{
-                        let moves = match piece.kind{
+                        let moves = match piece.piece_type{
                             PieceType::Pawn => generate_pawn_moves(&self, row, col),
                            // PieceType::Knight => generate_knight_moves(&self, Square { row, col }),
                             _ => Vec::new(),
@@ -132,7 +132,7 @@ impl Game{
         }
 
         if let Some(promotion) = chess_move.promotion{
-            self.board[chess_move.to_square.row][chess_move.to_square.col] = Some(Piece{kind: promotion, is_white: self.white_to_move});
+            self.board[chess_move.to_square.row][chess_move.to_square.col] = Some(Piece{piece_type: promotion, is_white: self.white_to_move});
         }
        
         self.check_for_en_pasant(chess_move);
@@ -153,7 +153,7 @@ impl Game{
             
 
             if let Some(moved_piece) = moved_piece{
-                if moved_piece.kind == PieceType::Pawn{
+                if moved_piece.piece_type == PieceType::Pawn{
                     
                     self.en_passant = Some(last_move.to_square);
 
@@ -166,7 +166,7 @@ impl Game{
 
     pub fn is_move_en_passant(&self, chess_move : Move) -> bool{
         if let Some(piece) = self.get_piece_at_square(chess_move.from_square){
-            let is_pawn = piece.kind == PieceType::Pawn;
+            let is_pawn = piece.piece_type == PieceType::Pawn;
             let is_capture = 0 != chess_move.from_square.col as isize - chess_move.to_square.col as isize;
             let is_empty_to_square = !self.is_piece_at_square(chess_move.to_square);
 
@@ -189,7 +189,7 @@ impl Game{
 
 }
 
-fn p (kind : PieceType, is_white : bool) -> Option<Piece> {
-    Some(Piece{kind, is_white})
+fn p (piece_type : PieceType, is_white : bool) -> Option<Piece> {
+    Some(Piece{piece_type, is_white})
 }
 
