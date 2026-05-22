@@ -11,6 +11,7 @@ use crate::chess_square::Square;
 use crate::debug::{log_debug};
 
 
+#[derive(Clone, Debug)]
 pub struct Game{
     pub board : Board,
     pub color_to_move : Color,
@@ -163,6 +164,10 @@ impl Game{
 
     fn occupied_squares_by_color(&self, color : Color) -> Vec<(Square, Piece)>{
         self.board.occupied_squares_by_color(color)
+    }
+
+    pub fn is_king_in_check(&self, color : Color) -> bool{
+        self.board.is_king_in_check(color)
     }
     
 

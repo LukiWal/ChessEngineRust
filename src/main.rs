@@ -67,12 +67,23 @@ fn main(){
       
 
             let all_legal_moves= game.generate_all_legal_moves();
+            let mut all_very_legal_moves: Vec<Move> = Vec::new();
+
+            for chess_move in all_legal_moves{
+                let mut game_clone = game.clone();
+                game_clone.apply_move(&chess_move);
+                
+                if !game_clone.is_king_in_check(game.color_to_move){
+                    all_very_legal_moves.push(chess_move);
+                }
+
+            }
 
             let mut very_good_moves : Vec<Move> = Vec::new();
             let mut good_moves : Vec<Move> = Vec::new();
             let mut moves : Vec<Move> = Vec::new();
 
-            for chess_move in all_legal_moves{
+            for chess_move in all_very_legal_moves{
                 if chess_move.is_en_passant == true || chess_move.promotion.is_some(){
                     very_good_moves.push(chess_move);
                 } else if chess_move.is_capture == true{

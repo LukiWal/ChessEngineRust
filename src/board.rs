@@ -9,7 +9,7 @@ use crate::move_gen::sliding_pieces::is_attacked_by_queen;
 use crate::move_gen::king::is_attacked_by_king;
 
 
-
+#[derive(Clone, Debug)]
 pub struct Board{
     squares : [[Option<Piece>;8];8]
 }
