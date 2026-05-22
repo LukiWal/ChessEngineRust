@@ -1,6 +1,13 @@
 use crate::constants::{ROW_DOWN, ROW_UP, COL_LEFT, COL_RIGHT, KNIGHT_OFFSETS};
 use crate::piece::{Piece, PieceType, Color};
 use crate::chess_square::{Square};
+use crate::move_gen::pawn::is_attacked_by_pawn;
+use crate::move_gen::knight::is_attacked_by_knight;
+use crate::move_gen::sliding_pieces::is_attacked_by_bishop;
+use crate::move_gen::sliding_pieces::is_attacked_by_rook;
+use crate::move_gen::sliding_pieces::is_attacked_by_queen;
+use crate::move_gen::king::is_attacked_by_king;
+
 
 
 pub struct Board{
@@ -59,6 +66,11 @@ impl Board{
         all_occupied_squares_by_color
     }
 
+    pub fn is_king_in_check(&self, color : Color) -> bool{
+        let king_square = self.find_king_by_color(color);
+        self.is_square_attacked(king_square, color)
+    }
+
     pub fn find_king_by_color(&self, color : Color) -> Square{
 
         for square in Square::all(){
@@ -74,39 +86,10 @@ impl Board{
     }
 
     pub fn is_square_attacked(&self, square : Square, attacking_color : Color) -> bool{
-        self.is_attacked_by_pawn(square, attacking_color) || self.is_attacked_by_knight(square, attacking_color)
+       is_attacked_by_pawn(&self, square, attacking_color) || is_attacked_by_knight(&self, square, attacking_color) ||
+       is_attacked_by_bishop(&self, square, attacking_color) ||is_attacked_by_rook(&self, square, attacking_color) ||
+       is_attacked_by_queen(&self, square, attacking_color) || is_attacked_by_king(&self, square, attacking_color)
     }
-
-    fn is_attacked_by_pawn(&self, square : Square, attacking_color : Color) -> bool{
-        let direction = if attacking_color == Color::White {ROW_UP} else {ROW_DOWN};
-        let offsets: [(isize, isize); 2] = [(direction, COL_LEFT), (direction, COL_RIGHT)];
-
-        for (row_direction, col_direction) in offsets{
-            let row = square.row as isize + row_direction;
-            let col = square.col as isize + col_direction;
-    
-            if let Some(attacking_square) = Square::new(row, col){
-                if self.get_piece(attacking_square).is_some_and(|attacking_piece| attacking_piece.color == attacking_color && attacking_piece.piece_type == PieceType::Pawn) {return true;}
-            }
-        }
-        false
-    }
-
-    fn is_attacked_by_knight(&self, square : Square, attacking_color : Color) -> bool{
-        for (row_direction, col_direction) in KNIGHT_OFFSETS{
-            let attacking_square : Option<Square> = Square::new(square.row as isize + row_direction, square.col as isize + col_direction);
-
-            if let Some(attacking_square) = attacking_square{
-                if self.get_piece(attacking_square).is_some_and(|attacking_piece| attacking_piece.color == attacking_color && attacking_piece.piece_type == PieceType::Knight) {return true;}
-            }
-        }
-
-        false
-    }
-
-    
-
-
 }
 
 

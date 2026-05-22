@@ -2,6 +2,9 @@ use crate::chess_move::Move;
 use crate::game::Game;
 use crate::chess_square::Square;
 use crate::debug::{log_debug, log_value};
+use crate::constants::{KNIGHT_OFFSETS};
+use crate::piece::{PieceType, Color};
+use crate::board::Board;
 
 pub fn generate_knight_moves(game : &Game, from_square : Square) -> Vec<Move>{
     let Some(piece) = game.get_piece(from_square) else {
@@ -32,3 +35,14 @@ pub fn generate_knight_moves(game : &Game, from_square : Square) -> Vec<Move>{
 
     legal_moves
 }
+
+ pub fn is_attacked_by_knight(board : &Board, square : Square, attacking_color : Color) -> bool{
+        for (row_direction, col_direction) in KNIGHT_OFFSETS{
+            let attacking_square : Option<Square> = Square::new(square.row as isize + row_direction, square.col as isize + col_direction);
+
+            if let Some(attacking_square) = attacking_square{
+                if board.get_piece(attacking_square).is_some_and(|attacking_piece| attacking_piece.color == attacking_color && attacking_piece.piece_type == PieceType::Knight) {return true;}
+            }
+        }
+        false
+    }

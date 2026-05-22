@@ -2,6 +2,8 @@ use crate::piece::{PieceType, Color};
 use crate::chess_move::{Move};
 use crate::chess_square::Square;
 use crate::game::Game;
+use crate::constants::{ROW_DOWN, ROW_UP, COL_LEFT, COL_RIGHT};
+use crate::board::Board;
 
 pub fn generate_pawn_moves(game : &Game , square : Square) -> Vec<Move>{
     let mut legal_moves: Vec<Move> = Vec::new();
@@ -80,3 +82,19 @@ fn generate_promotion_moves(from_square : Square, to_square : Square, is_capture
 
     promotion_moves
 }
+
+
+pub fn is_attacked_by_pawn(board : &Board, square : Square, attacking_color : Color) -> bool{
+        let direction = if attacking_color == Color::White {ROW_UP} else {ROW_DOWN};
+        let offsets: [(isize, isize); 2] = [(direction, COL_LEFT), (direction, COL_RIGHT)];
+
+        for (row_direction, col_direction) in offsets{
+            let row = square.row as isize + row_direction;
+            let col = square.col as isize + col_direction;
+    
+            if let Some(attacking_square) = Square::new(row, col){
+                if board.get_piece(attacking_square).is_some_and(|attacking_piece| attacking_piece.color == attacking_color && attacking_piece.piece_type == PieceType::Pawn) {return true;}
+            }
+        }
+        false
+    }

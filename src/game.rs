@@ -6,6 +6,7 @@ use crate::move_gen::knight::generate_knight_moves;
 use crate::move_gen::sliding_pieces::generate_rook_moves;
 use crate::move_gen::sliding_pieces::generate_bishop_moves;
 use crate::move_gen::sliding_pieces::generate_queen_moves;
+use crate::move_gen::king::generate_king_moves;
 use crate::chess_square::Square;
 use crate::debug::{log_debug};
 
@@ -35,6 +36,7 @@ impl Game{
                 PieceType::Rook => generate_rook_moves(&self, square),
                 PieceType::Bishop => generate_bishop_moves(&self, square),
                 PieceType::Queen => generate_queen_moves(&self, square),
+                PieceType::King => generate_king_moves(&self, square),
                 _ => Vec::new(),
             };
 
@@ -137,6 +139,10 @@ impl Game{
 
     pub fn is_occupied_by_opponent_color(&self, square : Square, color : Color) -> bool{
         self.board.is_occupied_by_opponent_color(square, color)
+    }
+
+     pub fn is_occupied_by_color(&self, square : Square, own_color : Color) -> bool{
+        self.board.is_occupied_by_color(square, own_color)
     }
 
     pub fn get_piece(&self, square : Square) -> Option<Piece>{

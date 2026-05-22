@@ -11,7 +11,6 @@ use rust_chess_engine::piece::{Color};
 
 
 fn main(){
-    //let mut board: [[Option<Piece>; 8]; 8] = [
        
 
     let mut game = Game::new();
