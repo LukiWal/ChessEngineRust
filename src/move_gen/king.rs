@@ -37,5 +37,5 @@ pub fn is_attacked_by_king(board : &Board, square : Square, attacking_color : Co
             if board.get_piece(attacking_square).is_some_and(|attacking_piece| attacking_piece.color == attacking_color && attacking_piece.piece_type == PieceType::King) {return true;}
         }
     }
-    true
+    false
 }

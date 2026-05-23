@@ -73,6 +73,7 @@ fn main(){
                 let mut game_clone = game.clone();
                 game_clone.apply_move(&chess_move);
                 
+
                 if !game_clone.is_king_in_check(game.color_to_move){
                     all_very_legal_moves.push(chess_move);
                 }

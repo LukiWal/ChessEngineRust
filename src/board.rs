@@ -7,6 +7,7 @@ use crate::move_gen::sliding_pieces::is_attacked_by_bishop;
 use crate::move_gen::sliding_pieces::is_attacked_by_rook;
 use crate::move_gen::sliding_pieces::is_attacked_by_queen;
 use crate::move_gen::king::is_attacked_by_king;
+use crate::debug::{log_debug, log_value};
 
 
 #[derive(Clone, Debug)]
@@ -68,7 +69,7 @@ impl Board{
 
     pub fn is_king_in_check(&self, color : Color) -> bool{
         let king_square = self.find_king_by_color(color);
-        self.is_square_attacked(king_square, color)
+        self.is_square_attacked(king_square, color.opposite())
     }
 
     pub fn find_king_by_color(&self, color : Color) -> Square{
@@ -86,9 +87,19 @@ impl Board{
     }
 
     pub fn is_square_attacked(&self, square : Square, attacking_color : Color) -> bool{
-       is_attacked_by_pawn(&self, square, attacking_color) || is_attacked_by_knight(&self, square, attacking_color) ||
-       is_attacked_by_bishop(&self, square, attacking_color) ||is_attacked_by_rook(&self, square, attacking_color) ||
-       is_attacked_by_queen(&self, square, attacking_color) || is_attacked_by_king(&self, square, attacking_color)
+        let attacked_by_pawn = is_attacked_by_pawn(self, square, attacking_color);
+        let attacked_by_knight = is_attacked_by_knight(self, square, attacking_color);
+        let attacked_by_bishop = is_attacked_by_bishop(self, square, attacking_color);
+        let attacked_by_rook = is_attacked_by_rook(self, square, attacking_color);
+        let attacked_by_queen = is_attacked_by_queen(self, square, attacking_color);
+        let attacked_by_king = is_attacked_by_king(self, square, attacking_color);
+        
+        attacked_by_pawn || 
+        attacked_by_knight || 
+        attacked_by_bishop ||
+        attacked_by_rook ||
+        attacked_by_queen ||
+        attacked_by_king
     }
 }
 

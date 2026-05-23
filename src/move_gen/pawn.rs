@@ -85,7 +85,7 @@ fn generate_promotion_moves(from_square : Square, to_square : Square, is_capture
 
 
 pub fn is_attacked_by_pawn(board : &Board, square : Square, attacking_color : Color) -> bool{
-        let direction = if attacking_color == Color::White {ROW_UP} else {ROW_DOWN};
+        let direction = if attacking_color == Color::White {ROW_DOWN} else {ROW_UP};
         let offsets: [(isize, isize); 2] = [(direction, COL_LEFT), (direction, COL_RIGHT)];
 
         for (row_direction, col_direction) in offsets{

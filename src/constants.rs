@@ -2,7 +2,7 @@ pub const ROW_UP : isize = -1;
 pub const ROW_DOWN : isize = 1;
 pub const ROW_NEUTRAL : isize = 0;
 pub const COL_LEFT : isize = -1;
-pub const COL_RIGHT : isize = -1;
+pub const COL_RIGHT : isize = 1;
 pub const COL_NEUTRAL : isize = 0;
 
 pub const KNIGHT_OFFSETS : [(isize, isize); 8] = 
@@ -27,7 +27,7 @@ pub const DIRECTION_UP_LEFT : (isize, isize) = (ROW_UP, COL_LEFT);
 
 
 
-pub const BISHOP_OFFSETS :  &[(isize,isize)] = 
+pub const ROOK_OFFSETS :  &[(isize,isize)] = 
 &[
     DIRECTION_UP,
     DIRECTION_RIGHT,
@@ -35,7 +35,7 @@ pub const BISHOP_OFFSETS :  &[(isize,isize)] =
     DIRECTION_LEFT,
 ];
 
-pub const ROOK_OFFSETS :  &[(isize,isize)] = 
+pub const BISHOP_OFFSETS :  &[(isize,isize)] = 
 &[
     DIRECTION_UP_RIGHT,
     DIRECTION_DOWN_RIGHT,
