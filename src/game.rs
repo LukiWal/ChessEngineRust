@@ -38,7 +38,6 @@ impl Game{
                 PieceType::Bishop => generate_bishop_moves(&self, square),
                 PieceType::Queen => generate_queen_moves(&self, square),
                 PieceType::King => generate_king_moves(&self, square),
-                _ => Vec::new(),
             };
 
             all_legal_moves.extend(moves);       
@@ -99,7 +98,7 @@ impl Game{
         self.color_to_move = self.color_to_move.opposite(); 
     }
 
-    pub fn check_for_en_pasant(&mut self, chess_move : &Move){
+    fn check_for_en_pasant(&mut self, chess_move : &Move){
         let en_passant_from_row = if self.color_to_move == Color::White {6} else {1};
         let en_passant_to_row = if self.color_to_move == Color::White {4} else {3};
 

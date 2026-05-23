@@ -11,17 +11,9 @@ pub fn generate_knight_moves(game : &Game, from_square : Square) -> Vec<Move>{
         return Vec::new();
     };
 
-
     let mut legal_moves: Vec<Move> = Vec::new();
 
-    let offsets: [(isize, isize); 8] = [
-        (2,-1),(2,1),
-        (1,2) ,(-1,2),
-        (-2,1),(-2,-1),
-        (1,-2),(-1,-2)
-    ];
-
-    for (row_direction, col_direction) in offsets{
+    for (row_direction, col_direction) in KNIGHT_OFFSETS{
         let to_square : Option<Square> = Square::new(from_square.row as isize + row_direction, from_square.col as isize + col_direction);
 
         if let Some(to_square) = to_square{
@@ -36,13 +28,13 @@ pub fn generate_knight_moves(game : &Game, from_square : Square) -> Vec<Move>{
     legal_moves
 }
 
- pub fn is_attacked_by_knight(board : &Board, square : Square, attacking_color : Color) -> bool{
-        for (row_direction, col_direction) in KNIGHT_OFFSETS{
-            let attacking_square : Option<Square> = Square::new(square.row as isize + row_direction, square.col as isize + col_direction);
+pub fn is_attacked_by_knight(board : &Board, square : Square, attacking_color : Color) -> bool{
+    for (row_direction, col_direction) in KNIGHT_OFFSETS{
+        let attacking_square : Option<Square> = Square::new(square.row as isize + row_direction, square.col as isize + col_direction);
 
-            if let Some(attacking_square) = attacking_square{
-                if board.get_piece(attacking_square).is_some_and(|attacking_piece| attacking_piece.color == attacking_color && attacking_piece.piece_type == PieceType::Knight) {return true;}
-            }
+        if let Some(attacking_square) = attacking_square{
+            if board.get_piece(attacking_square).is_some_and(|attacking_piece| attacking_piece.color == attacking_color && attacking_piece.piece_type == PieceType::Knight) {return true;}
         }
-        false
     }
+    false
+}

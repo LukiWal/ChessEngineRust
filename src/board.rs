@@ -1,4 +1,4 @@
-use crate::constants::{ROW_DOWN, ROW_UP, COL_LEFT, COL_RIGHT, KNIGHT_OFFSETS};
+use crate::constants::{STANDARD_BOARD_SETUP};
 use crate::piece::{Piece, PieceType, Color};
 use crate::chess_square::{Square};
 use crate::move_gen::pawn::is_attacked_by_pawn;
@@ -104,51 +104,3 @@ impl Board{
 }
 
 
-const STANDARD_BOARD_SETUP : [[Option<Piece>; 8]; 8] = [[
-    new_piece(PieceType::Rook,   Color::Black), 
-    new_piece(PieceType::Knight, Color::Black),
-    new_piece(PieceType::Bishop, Color::Black),
-    new_piece(PieceType::Queen,  Color::Black),
-    new_piece(PieceType::King,   Color::Black),
-    new_piece(PieceType::Bishop, Color::Black),
-    new_piece(PieceType::Knight, Color::Black),
-    new_piece(PieceType::Rook,   Color::Black),
-],
-[
-    new_piece(PieceType::Pawn, Color::Black), 
-    new_piece(PieceType::Pawn, Color::Black),
-    new_piece(PieceType::Pawn, Color::Black),
-    new_piece(PieceType::Pawn, Color::Black),
-    new_piece(PieceType::Pawn, Color::Black),
-    new_piece(PieceType::Pawn, Color::Black),
-    new_piece(PieceType::Pawn, Color::Black),
-    new_piece(PieceType::Pawn, Color::Black),
-],
-    [None;8],
-    [None;8],
-    [None;8],
-    [None;8],
-[
-    new_piece(PieceType::Pawn, Color::White), 
-    new_piece(PieceType::Pawn, Color::White),
-    new_piece(PieceType::Pawn, Color::White),
-    new_piece(PieceType::Pawn, Color::White),
-    new_piece(PieceType::Pawn, Color::White),
-    new_piece(PieceType::Pawn, Color::White),
-    new_piece(PieceType::Pawn, Color::White),
-    new_piece(PieceType::Pawn, Color::White),
-],
-[
-    new_piece(PieceType::Rook,   Color::White), 
-    new_piece(PieceType::Knight, Color::White),
-    new_piece(PieceType::Bishop, Color::White),
-    new_piece(PieceType::Queen,  Color::White),
-    new_piece(PieceType::King,   Color::White),
-    new_piece(PieceType::Bishop, Color::White),
-    new_piece(PieceType::Knight, Color::White),
-    new_piece(PieceType::Rook,   Color::White),
-]];
-
-const fn new_piece(piece_type : PieceType, color : Color) -> Option<Piece> {
-    Some(Piece::new(piece_type, color))
-}

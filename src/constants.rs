@@ -1,3 +1,5 @@
+use crate::piece::{Piece, PieceType, Color};
+
 pub const ROW_UP : isize = -1;
 pub const ROW_DOWN : isize = 1;
 pub const ROW_NEUTRAL : isize = 0;
@@ -66,3 +68,52 @@ pub const KING_OFFSETS : [(isize,isize);8] =
     DIRECTION_LEFT,
     DIRECTION_UP_LEFT
 ];
+
+pub const STANDARD_BOARD_SETUP : [[Option<Piece>; 8]; 8] = [[
+    new_piece(PieceType::Rook,   Color::Black), 
+    new_piece(PieceType::Knight, Color::Black),
+    new_piece(PieceType::Bishop, Color::Black),
+    new_piece(PieceType::Queen,  Color::Black),
+    new_piece(PieceType::King,   Color::Black),
+    new_piece(PieceType::Bishop, Color::Black),
+    new_piece(PieceType::Knight, Color::Black),
+    new_piece(PieceType::Rook,   Color::Black),
+],
+[
+    new_piece(PieceType::Pawn, Color::Black), 
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+    new_piece(PieceType::Pawn, Color::Black),
+],
+    [None;8],
+    [None;8],
+    [None;8],
+    [None;8],
+[
+    new_piece(PieceType::Pawn, Color::White), 
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+    new_piece(PieceType::Pawn, Color::White),
+],
+[
+    new_piece(PieceType::Rook,   Color::White), 
+    new_piece(PieceType::Knight, Color::White),
+    new_piece(PieceType::Bishop, Color::White),
+    new_piece(PieceType::Queen,  Color::White),
+    new_piece(PieceType::King,   Color::White),
+    new_piece(PieceType::Bishop, Color::White),
+    new_piece(PieceType::Knight, Color::White),
+    new_piece(PieceType::Rook,   Color::White),
+]];
+
+const fn new_piece(piece_type : PieceType, color : Color) -> Option<Piece> {
+    Some(Piece::new(piece_type, color))
+}

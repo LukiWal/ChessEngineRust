@@ -7,32 +7,15 @@ use crate::board::Board;
 use crate::piece::{PieceType, Color};
 
 pub fn generate_rook_moves(game : &Game, from_square : Square) -> Vec<Move>{
-    let offsets:Vec<(isize, isize)>  = vec![
-        (1,0),(-1,0),
-        (0,1),(0,-1)
-    ];
-
-    generate_sliding_moves(game, from_square, offsets)
+    generate_sliding_moves(game, from_square, ROOK_OFFSETS)
 }
 
 pub fn generate_bishop_moves(game : &Game, from_square : Square) -> Vec<Move>{
-    let offsets:Vec<(isize, isize)>  = vec![
-        (-1,-1),(-1,1),
-        (1,1),(1,-1)
-    ];
-
-    generate_sliding_moves(game, from_square, offsets)
+    generate_sliding_moves(game, from_square, BISHOP_OFFSETS)
 }
 
 pub fn generate_queen_moves(game : &Game, from_square : Square) -> Vec<Move>{
-    let offsets:Vec<(isize, isize)>  = vec![
-        (-1,-1),(-1,1),
-        (1,1),(1,-1), 
-        (1,0),(-1,0),
-        (0,1),(0,-1)
-    ];
-
-    generate_sliding_moves(game, from_square, offsets)
+    generate_sliding_moves(game, from_square, QUEEN_OFFSETS)
 }
 
 pub fn is_attacked_by_rook(board : &Board, square : Square, attacking_color : Color) -> bool{  
@@ -47,7 +30,7 @@ pub fn is_attacked_by_queen(board : &Board, square : Square, attacking_color : C
     is_attacked_by_sliding_piece(&board, square, attacking_color, QUEEN_OFFSETS, PieceType::Queen)
 }
 
-fn generate_sliding_moves(game : &Game, from_square : Square, offsets : Vec<(isize, isize)> ) -> Vec<Move>{
+fn generate_sliding_moves(game : &Game, from_square : Square, offsets : &[(isize,isize)] ) -> Vec<Move>{
     let Some(piece) = game.get_piece(from_square) else {
         return Vec::new();
     };
