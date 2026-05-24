@@ -29,14 +29,14 @@ pub fn generate_pawn_moves(game : &Game , square : Square) -> Vec<Move>{
         if let Some(move_1sqr_forward) = move_1sqr_forward {
             if !game.is_occupied(move_1sqr_forward){
                 if move_1sqr_forward.row != promotion_row{
-                    legal_moves.push(Move { from_square: from_square, to_square: move_1sqr_forward, is_capture: false, promotion: None, is_en_passant : false });
+                    legal_moves.push(Move { from_square: from_square, to_square: move_1sqr_forward, is_capture: false, promotion: None, is_en_passant : false, is_castle: false });
                 } else{
                     legal_moves.extend(generate_promotion_moves(from_square, move_1sqr_forward, false));
                 }
 
                 if let Some(move_2sqrs_forward) = move_2sqrs_forward{
                     if !game.is_occupied(move_2sqrs_forward) && from_square.row == start_row{
-                        legal_moves.push(Move { from_square: from_square, to_square: move_2sqrs_forward, is_capture: false, promotion: None, is_en_passant : false });
+                        legal_moves.push(Move { from_square: from_square, to_square: move_2sqrs_forward, is_capture: false, promotion: None, is_en_passant : false, is_castle: false  });
                     }
                 }    
             }     
@@ -47,7 +47,7 @@ pub fn generate_pawn_moves(game : &Game , square : Square) -> Vec<Move>{
             if let Some(square) = square{
                 if game.is_occupied_by_opponent_color(square, piece.color) {
                     if square.row != promotion_row{
-                        legal_moves.push(Move { from_square: from_square, to_square: square, is_capture: true, promotion: None, is_en_passant: false });
+                        legal_moves.push(Move { from_square: from_square, to_square: square, is_capture: true, promotion: None, is_en_passant: false, is_castle: false  });
                     } else{
                         legal_moves.extend(generate_promotion_moves(from_square, square, true));
                     }
@@ -59,7 +59,7 @@ pub fn generate_pawn_moves(game : &Game , square : Square) -> Vec<Move>{
                     if let Some(en_passant_capture) = en_passant_capture{
 
                         if square == en_passant_capture{
-                                legal_moves.push(Move { from_square, to_square: en_passant_capture, is_capture: true, promotion: None, is_en_passant : true });
+                                legal_moves.push(Move { from_square, to_square: en_passant_capture, is_capture: true, promotion: None, is_en_passant : true, is_castle: false  });
                             }
                         
                     }
@@ -77,7 +77,7 @@ fn generate_promotion_moves(from_square : Square, to_square : Square, is_capture
     let mut promotion_moves : Vec<Move> = Vec::new();
 
     for piece_type in [PieceType::Queen, PieceType::Rook, PieceType::Knight, PieceType::Bishop]{
-        promotion_moves.push(Move { from_square, to_square, is_capture, promotion: Some(piece_type), is_en_passant : false});
+        promotion_moves.push(Move { from_square, to_square, is_capture, promotion: Some(piece_type), is_en_passant : false, is_castle: false });
     }
 
     promotion_moves

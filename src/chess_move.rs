@@ -6,24 +6,29 @@ pub struct Move{
     pub to_square : Square,
     pub is_capture : bool,
     pub is_en_passant : bool,
+    pub is_castle : bool,
     pub promotion : Option<PieceType>,
 }
 
 impl Move{
     pub const fn new_normal(from_square : Square, to_square : Square) -> Self{
-        Self { from_square, to_square, is_capture: false, is_en_passant: false, promotion: None}
+        Self { from_square, to_square, is_capture: false, is_en_passant: false, is_castle: false, promotion: None}
     }
 
     pub const fn new_capture(from_square : Square, to_square : Square) -> Self{
-        Self { from_square, to_square, is_capture: true, is_en_passant: false, promotion: None}
+        Self { from_square, to_square, is_capture: true, is_en_passant: false, is_castle: false, promotion: None}
     }
 
     pub const fn new_en_passant(from_square : Square, to_square : Square) -> Self{
-        Self { from_square, to_square, is_capture: true, is_en_passant: true, promotion: None}
+        Self { from_square, to_square, is_capture: true, is_en_passant: true, is_castle: false, promotion: None}
     }
 
     pub const fn new_promotion(from_square : Square, to_square : Square, is_capture : bool, promotion : PieceType) -> Self{
-        Self { from_square, to_square, is_capture: is_capture, is_en_passant: false, promotion: Some(promotion)}
+        Self { from_square, to_square, is_capture: is_capture, is_en_passant: false, is_castle: false, promotion: Some(promotion)}
+    }
+
+    pub const fn new_castle(from_square : Square, to_square : Square) -> Self{
+        Self { from_square, to_square, is_capture: false, is_en_passant: false, is_castle: false, promotion: None}
     }
 
     pub fn translate_move_to_uci(&self) -> String{
@@ -68,6 +73,7 @@ impl Move{
             is_capture : false,
             promotion : promotion,
             is_en_passant : false, //FIX
+            is_castle : false, //FIX
         }
     }
 

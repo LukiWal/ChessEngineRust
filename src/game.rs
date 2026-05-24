@@ -1,4 +1,4 @@
-use crate::piece::{Piece, PieceType, Color};
+use crate::piece::{Piece, PieceType, Color, CastlingRights};
 use crate::board::{Board};
 use crate::chess_move::{Move};
 use crate::move_gen::pawn::generate_pawn_moves;
@@ -15,14 +15,15 @@ use crate::debug::{log_debug};
 pub struct Game{
     pub board : Board,
     pub color_to_move : Color,
-    pub en_passant : Option<Square>
+    pub en_passant : Option<Square>,
+    pub catling_rights: CastlingRights,
 }
 
 
 impl Game{
 
     pub fn new() -> Self{
-        Self { board: Board::new(), color_to_move: Color::White, en_passant: None}
+        Self { board: Board::new(), color_to_move: Color::White, en_passant: None, catling_rights : CastlingRights::new()}
     }
 
 
@@ -92,13 +93,34 @@ impl Game{
             self.set_piece(chess_move.to_square, Piece::new(promotion, self.color_to_move));
         }
        
-        self.check_for_en_pasant(chess_move);
+        self.set_en_passant_attribute(chess_move);
  
+        if let Some(moved_piece) = self.get_piece(chess_move.from_square){
+            if moved_piece.piece_type == PieceType::Rook{
+                match chess_move.from_square{
+                    Square{row : 7, col: 0} => self.catling_rights.white_queenside = false,
+                    Square{row : 7, col: 7} => self.catling_rights.white_kingside = false,
+                    Square{row : 0, col: 0} => self.catling_rights.black_queenside = false,
+                    Square{row : 0, col: 7} => self.catling_rights.black_kingside = false,
+                    _ => {}
+                }
+            }
+
+            if moved_piece.piece_type == PieceType::King{
+                if moved_piece.color == Color::White {
+                    self.catling_rights.white_queenside = false;
+                    self.catling_rights.white_kingside = false;
+                } else if moved_piece.color == Color::Black{
+                    self.catling_rights.black_queenside = false;
+                    self.catling_rights.black_kingside = false;
+                }
+            }
+        }
 
         self.color_to_move = self.color_to_move.opposite(); 
     }
 
-    fn check_for_en_pasant(&mut self, chess_move : &Move){
+    fn set_en_passant_attribute(&mut self, chess_move : &Move){
         let en_passant_from_row = if self.color_to_move == Color::White {6} else {1};
         let en_passant_to_row = if self.color_to_move == Color::White {4} else {3};
 
@@ -118,7 +140,7 @@ impl Game{
         self.en_passant = None;
     }
 
-    pub fn is_move_en_passant(&self, chess_move : Move) -> bool{
+    fn is_move_en_passant(&self, chess_move : Move) -> bool{
         if let Some(piece) = self.get_piece(chess_move.from_square){
             let is_pawn = piece.piece_type == PieceType::Pawn;
             let is_capture = 0 != chess_move.from_square.col as isize - chess_move.to_square.col as isize;
@@ -165,6 +187,9 @@ impl Game{
         self.board.occupied_squares_by_color(color)
     }
 
+    pub fn is_square_attacked(&self, square : Square, attacking_color : Color) -> bool{
+        self.board.is_square_attacked(square, attacking_color)
+    }
     pub fn is_king_in_check(&self, color : Color) -> bool{
         self.board.is_king_in_check(color)
     }

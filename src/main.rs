@@ -85,7 +85,7 @@ fn main(){
             let mut moves : Vec<Move> = Vec::new();
 
             for chess_move in all_very_legal_moves{
-                if chess_move.is_en_passant == true || chess_move.promotion.is_some(){
+                if chess_move.is_en_passant == true || chess_move.promotion.is_some() || chess_move.is_castle{
                     very_good_moves.push(chess_move);
                 } else if chess_move.is_capture == true{
                     good_moves.push(chess_move);

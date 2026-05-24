@@ -25,6 +25,24 @@ pub fn generate_king_moves(game : &Game, from_square : Square) -> Vec<Move>{
         }
     }
 
+    if game.color_to_move == Color::White{
+        if game.catling_rights.white_kingside{
+
+        }
+
+        if game.catling_rights.white_kingside{
+            let white_bishop_starting_square = Square{row: 7, col: 5};
+            let white_knight_starting_square = Square{row: 7, col: 6};
+            let white_king_rook_starting_square = Square{row: 7, col: 7};
+            let white_king_starting_square = Square{row: 7, col: 4};
+
+            if !game.is_occupied(white_bishop_starting_square) && !game.is_square_attacked(white_bishop_starting_square, Color::Black) &&
+            !game.is_occupied(white_knight_starting_square) && !game.is_square_attacked(white_knight_starting_square, Color::Black){
+                legal_moves.push(Move::new_castle(white_king_starting_square, white_knight_starting_square))
+            }
+        }
+    }
+
     legal_moves
 }
 
