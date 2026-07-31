@@ -9,7 +9,7 @@ use crate::move_gen::sliding_pieces::generate_queen_moves;
 use crate::move_gen::king::generate_king_moves;
 use crate::chess_square::Square;
 use crate::debug::{log_debug};
-
+use crate::constants::{WHITE_KING_STARTING_SQUARE};
 
 #[derive(Clone, Debug)]
 pub struct Game{
@@ -69,12 +69,24 @@ impl Game{
             if self.is_move_en_passant(chess_move){
                 chess_move.is_en_passant = true;
             }
+
+            if self.is_move_castle(&chess_move){
+                chess_move.is_castle = true;
+            }
+            //is move castle?
             self.apply_move(&chess_move);
         }
+    }
 
-
-        
-
+    fn is_move_castle(&self, chess_move : &Move) -> bool{
+        if let Some(piece) = self.get_piece(chess_move.from_square){
+            if piece.piece_type == PieceType::King{
+                if chess_move.from_square.col.abs_diff(chess_move.to_square.col) == 2{
+                    return true
+                }
+            }
+        }
+        false
     }
 
     pub fn apply_move(&mut self, chess_move : &Move){
@@ -89,34 +101,17 @@ impl Game{
             }
         }
 
+        if chess_move.is_castle{
+            panic!();
+        }
+
         if let Some(promotion) = chess_move.promotion{
             self.set_piece(chess_move.to_square, Piece::new(promotion, self.color_to_move));
         }
        
         self.set_en_passant_attribute(chess_move);
+        self.set_castling_rights(chess_move);
  
-        if let Some(moved_piece) = self.get_piece(chess_move.from_square){
-            if moved_piece.piece_type == PieceType::Rook{
-                match chess_move.from_square{
-                    Square{row : 7, col: 0} => self.catling_rights.white_queenside = false,
-                    Square{row : 7, col: 7} => self.catling_rights.white_kingside = false,
-                    Square{row : 0, col: 0} => self.catling_rights.black_queenside = false,
-                    Square{row : 0, col: 7} => self.catling_rights.black_kingside = false,
-                    _ => {}
-                }
-            }
-
-            if moved_piece.piece_type == PieceType::King{
-                if moved_piece.color == Color::White {
-                    self.catling_rights.white_queenside = false;
-                    self.catling_rights.white_kingside = false;
-                } else if moved_piece.color == Color::Black{
-                    self.catling_rights.black_queenside = false;
-                    self.catling_rights.black_kingside = false;
-                }
-            }
-        }
-
         self.color_to_move = self.color_to_move.opposite(); 
     }
 
@@ -152,6 +147,30 @@ impl Game{
 
         }
         false
+    }
+
+    fn set_castling_rights(&mut self, chess_move : &Move){
+        if let Some(moved_piece) = self.get_piece(chess_move.to_square){
+            if moved_piece.piece_type == PieceType::Rook{
+                match chess_move.from_square{
+                    Square{row : 7, col: 0} => self.catling_rights.white_queenside = false,
+                    Square{row : 7, col: 7} => self.catling_rights.white_kingside = false,
+                    Square{row : 0, col: 0} => self.catling_rights.black_queenside = false,
+                    Square{row : 0, col: 7} => self.catling_rights.black_kingside = false,
+                    _ => {}
+                }
+            }
+
+            if moved_piece.piece_type == PieceType::King{
+                if moved_piece.color == Color::White {
+                    self.catling_rights.white_queenside = false;
+                    self.catling_rights.white_kingside = false;
+                } else if moved_piece.color == Color::Black{
+                    self.catling_rights.black_queenside = false;
+                    self.catling_rights.black_kingside = false;
+                }
+            }
+        }
     }
 
 

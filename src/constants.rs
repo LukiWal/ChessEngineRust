@@ -1,4 +1,8 @@
-use crate::piece::{Piece, PieceType, Color};
+use crate::piece::{Piece, PieceType, Color, };
+use crate::chess_square::{Square};
+
+pub const WHITE_KING_STARTING_SQUARE : Square = Square{row: 7, col: 4};
+
 
 pub const ROW_UP : isize = -1;
 pub const ROW_DOWN : isize = 1;
