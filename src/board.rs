@@ -101,6 +101,11 @@ impl Board{
         attacked_by_queen ||
         attacked_by_king
     }
+
+    pub fn is_square_occupied_or_attacked(&self, square: Square, attacking_color : Color) -> bool{
+       self.is_occupied(square) ||
+       self.is_square_attacked(square, attacking_color)
+    }
 }
 
 

@@ -9,7 +9,7 @@ use crate::move_gen::sliding_pieces::generate_queen_moves;
 use crate::move_gen::king::generate_king_moves;
 use crate::chess_square::Square;
 use crate::debug::{log_debug};
-use crate::constants::{WHITE_KING_STARTING_SQUARE};
+use crate::constants::{WHITE_KING_STARTING_SQUARE, ROOK_QUEENSIDE_STARTING_COL, ROOK_KINGSIDE_STARTING_COL, ROOK_KINGSIDE_CASTLING_COL, ROOK_QUEENSIDE_CASTLING_COL, KING_SHORT_CASTLING_COL, KING_LONG_CASTLING_COL};
 
 #[derive(Clone, Debug)]
 pub struct Game{
@@ -32,7 +32,7 @@ impl Game{
       
         for (square, piece) in self.occupied_squares_by_color(self.color_to_move){
 
-            let moves = match piece.piece_type{
+            let moves: Vec<Move> = match piece.piece_type{
                 PieceType::Pawn => generate_pawn_moves(&self, square),
                 PieceType::Knight => generate_knight_moves(&self, square),
                 PieceType::Rook => generate_rook_moves(&self, square),
@@ -102,7 +102,15 @@ impl Game{
         }
 
         if chess_move.is_castle{
-            panic!();
+            let row: usize = chess_move.from_square.row;
+
+            //Move Rook depending on long or short castle
+            if(chess_move.to_square.col == KING_LONG_CASTLING_COL){
+                self.move_piece(Square { row: row, col: ROOK_QUEENSIDE_STARTING_COL}, Square { row: row, col: ROOK_QUEENSIDE_CASTLING_COL})
+            } else if(chess_move.to_square.col == KING_SHORT_CASTLING_COL){
+                self.move_piece(Square { row: row, col: ROOK_KINGSIDE_STARTING_COL}, Square { row: row, col: ROOK_KINGSIDE_CASTLING_COL})
+            }
+                
         }
 
         if let Some(promotion) = chess_move.promotion{
@@ -211,6 +219,10 @@ impl Game{
     }
     pub fn is_king_in_check(&self, color : Color) -> bool{
         self.board.is_king_in_check(color)
+    }
+
+    pub fn is_square_occupied_or_attacked(&self, square : Square, attacking_color : Color) -> bool{
+        self.board.is_square_occupied_or_attacked(square, attacking_color)
     }
     
 

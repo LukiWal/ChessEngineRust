@@ -27,19 +27,53 @@ pub fn generate_king_moves(game : &Game, from_square : Square) -> Vec<Move>{
 
     if game.color_to_move == Color::White{
         if game.catling_rights.white_kingside{
-
+            const WHITE_KINGSIDE_BISHOP_STARTING_SQUARE : Square = Square{row: 7, col: 5};
+            const WHITE_KINGSIDE_KNIGHT_STARTING_SQUARE : Square = Square{row: 7, col: 6};
+            const WHITE_KING_STARTING_SQUARE : Square = Square{row: 7, col: 4} ;  
+          
+            if !game.is_square_occupied_or_attacked(WHITE_KINGSIDE_BISHOP_STARTING_SQUARE, Color::Black) && 
+               !game.is_square_occupied_or_attacked(WHITE_KINGSIDE_KNIGHT_STARTING_SQUARE, Color::Black) &&
+               !game.is_king_in_check(Color::White){
+                    legal_moves.push(Move::new_castle(WHITE_KING_STARTING_SQUARE, WHITE_KINGSIDE_KNIGHT_STARTING_SQUARE));
+            } 
         }
 
-        if game.catling_rights.white_kingside{
-            let white_bishop_starting_square = Square{row: 7, col: 5};
-            let white_knight_starting_square = Square{row: 7, col: 6};
-            let white_king_rook_starting_square = Square{row: 7, col: 7};
-            let white_king_starting_square = Square{row: 7, col: 4};
+          if game.catling_rights.white_queenside{
+            const WHITE_QUEENSIDE_QUEEN_STARTING_SQUARE : Square = Square{row: 7, col: 3};
+            const WHITE_QUEENSIDE_BISHOP_STARTING_SQUARE : Square = Square{row: 7, col: 2};
+            const WHITE_KING_STARTING_SQUARE : Square = Square{row: 7, col: 4} ;  
+          
+            if !game.is_square_occupied_or_attacked(WHITE_QUEENSIDE_QUEEN_STARTING_SQUARE, Color::Black) && 
+               !game.is_square_occupied_or_attacked(WHITE_QUEENSIDE_BISHOP_STARTING_SQUARE, Color::Black) &&
+               !game.is_king_in_check(Color::White){
+                    legal_moves.push(Move::new_castle(WHITE_KING_STARTING_SQUARE, WHITE_QUEENSIDE_BISHOP_STARTING_SQUARE));
+            } 
+        }
+    }
 
-            if !game.is_occupied(white_bishop_starting_square) && !game.is_square_attacked(white_bishop_starting_square, Color::Black) &&
-            !game.is_occupied(white_knight_starting_square) && !game.is_square_attacked(white_knight_starting_square, Color::Black){
-                legal_moves.push(Move::new_castle(white_king_starting_square, white_knight_starting_square))
-            }
+     if game.color_to_move == Color::Black{
+        if game.catling_rights.black_kingside{
+            const BLACK_KINGSIDE_BISHOP_STARTING_SQUARE : Square = Square{row: 0, col: 5};
+            const BLACK_KINGSIDE_KNIGHT_STARTING_SQUARE : Square = Square{row: 0, col: 6};
+            const BLACK_KING_STARTING_SQUARE : Square = Square{row: 0, col: 4} ;  
+          
+            if !game.is_square_occupied_or_attacked(BLACK_KINGSIDE_BISHOP_STARTING_SQUARE, Color::Black) && 
+               !game.is_square_occupied_or_attacked(BLACK_KINGSIDE_KNIGHT_STARTING_SQUARE, Color::Black) &&
+               !game.is_king_in_check(Color::Black){
+                    legal_moves.push(Move::new_castle(BLACK_KING_STARTING_SQUARE, BLACK_KINGSIDE_KNIGHT_STARTING_SQUARE));
+            } 
+        }
+
+          if game.catling_rights.black_queenside{
+            const BLACK_QUEENSIDE_QUEEN_STARTING_SQUARE : Square = Square{row: 0, col: 3};
+            const BLACK_QUEENSIDE_BISHOP_STARTING_SQUARE : Square = Square{row: 0, col: 2};
+            const BLACK_KING_STARTING_SQUARE : Square = Square{row: 0, col: 4} ;  
+          
+            if !game.is_square_occupied_or_attacked(BLACK_QUEENSIDE_QUEEN_STARTING_SQUARE, Color::Black) && 
+               !game.is_square_occupied_or_attacked(BLACK_QUEENSIDE_BISHOP_STARTING_SQUARE, Color::Black) &&
+               !game.is_king_in_check(Color::Black){
+                    legal_moves.push(Move::new_castle(BLACK_KING_STARTING_SQUARE, BLACK_QUEENSIDE_BISHOP_STARTING_SQUARE));
+            } 
         }
     }
 

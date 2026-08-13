@@ -3,6 +3,14 @@ use crate::chess_square::{Square};
 
 pub const WHITE_KING_STARTING_SQUARE : Square = Square{row: 7, col: 4};
 
+pub const ROOK_QUEENSIDE_STARTING_COL : usize = 0;
+pub const ROOK_KINGSIDE_STARTING_COL : usize = 7;
+
+pub const ROOK_QUEENSIDE_CASTLING_COL : usize = 3;
+pub const ROOK_KINGSIDE_CASTLING_COL : usize = 5;
+
+pub const KING_SHORT_CASTLING_COL : usize = 6;
+pub const KING_LONG_CASTLING_COL : usize = 2;
 
 pub const ROW_UP : isize = -1;
 pub const ROW_DOWN : isize = 1;

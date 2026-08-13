@@ -6,7 +6,7 @@ use rand::seq::IndexedRandom;
 use rust_chess_engine::chess_move::Move;
 use rust_chess_engine::debug::{log_debug, log_value};
 use rust_chess_engine::game::Game;
-use rust_chess_engine::piece::{Color};
+use rust_chess_engine::piece::{Color, PieceType};
 
 
 
@@ -70,9 +70,9 @@ fn main(){
             let mut all_very_legal_moves: Vec<Move> = Vec::new();
 
             for chess_move in all_legal_moves{
+               
                 let mut game_clone = game.clone();
                 game_clone.apply_move(&chess_move);
-                
 
                 if !game_clone.is_king_in_check(game.color_to_move){
                     all_very_legal_moves.push(chess_move);
